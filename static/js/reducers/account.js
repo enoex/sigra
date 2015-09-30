@@ -15,7 +15,13 @@ import * as ACTIONS from '../actions.js';
  * Reducers
  *
  */
-export default function account ( state={}, action ){
+const defaultState = {
+    parties: [],
+    maxNumParties: 6,
+    selectedParty: null
+};
+
+export default function account ( state=defaultState, action ){
     switch(action.type){
         default:
             return state;

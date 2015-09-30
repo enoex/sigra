@@ -389,6 +389,10 @@ html, body {
  * 
  * ========================================================================= */
 .main-menu__wrapper {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   position: absolute;
   top: 0;
   right: 0;
@@ -452,3 +456,139 @@ html, body {
   color: #000000; }
   .main-menu__list-item:hover:before {
     border: 6px solid #c49a6c; }
+
+/* =========================================================================
+ *
+ * root-party
+ * 
+ * ========================================================================= */
+/*
+    TODO: Combine this and the main-menu.scss. Pull out shared styles
+*/
+.root-party__wrapper {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  top: 10px;
+  right: 0;
+  bottom: 10px;
+  left: 50%;
+  color: #c49a6c;
+  margin-left: -380px;
+  width: 760px; }
+
+.root-party__inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px solid #c49a6c; }
+  .root-party__inner:before {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    bottom: -6px;
+    left: -6px;
+    content: " ";
+    z-index: -1;
+    border: 6px solid #000000; }
+
+/*
+ * Current Party list
+ */
+.root-party__current-party-list-wrapper {
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: 0;
+  border-right: 1px solid #c49a6c;
+  width: 300px;
+  z-index: 10; }
+
+/* Header / Footer */
+.root-party__current-party-list-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  border-bottom: 1px solid #c49a6c;
+  height: 56px; }
+  .root-party__current-party-list-header h2 {
+    cursor: default;
+    padding-top: 0em;
+    margin-top: 0.5em;
+    text-align: center; }
+
+.root-party__current-party-list-back {
+  position: absolute;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #c49a6c;
+  height: 40px; }
+  .root-party__current-party-list-back h3 {
+    cursor: default;
+    padding: 0 0 0 1em;
+    margin-top: 0.4em; }
+
+/* List */
+.root-party__current-party-list {
+  position: absolute;
+  top: 66px;
+  right: 0;
+  bottom: 46px;
+  left: 0;
+  overflow: auto;
+  z-index: 10; }
+
+.root-party__current-party-list-item {
+  background: #000000;
+  border: 1px solid #c49a6c;
+  cursor: pointer;
+  position: relative;
+  padding: 1em;
+  margin: 1em;
+  text-align: center; }
+  .root-party__current-party-list-item:before {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    bottom: -6px;
+    left: -6px;
+    content: " ";
+    z-index: -1;
+    border: 6px solid #000000; }
+
+.root-party__current-party-list-item:hover {
+  border: 1px solid #000000;
+  background: #c49a6c;
+  color: #000000; }
+  .root-party__current-party-list-item:hover:before {
+    border: 6px solid #c49a6c; }
+
+/* Empty Item */
+.root-party__current-party-list-item-empty,
+.root-party__current-party-list-item-empty:hover {
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px dashed rgba(255, 255, 255, 0.5); }
+
+.root-party__current-party-list-item-empty:hover {
+  background: none;
+  color: #c49a6c; }
+  .root-party__current-party-list-item-empty:hover:before {
+    border: 1px solid #c49a6c; }
+
+/* Right Side */
+.root-party__right-panel-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 300px;
+  z-index: 10; }

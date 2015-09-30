@@ -11,8 +11,7 @@ import {Route, DefaultRoute, NotFoundRoute} from 'react-router';
 import {create, HistoryLocation, HashLocation} from 'react-router';
 
 import App from './components/app.js';
-import PageMainMenu from './components/page-main-menu.js';
-import PageParty from './components/page-party.js';
+import PageRoot from './components/page-root.js';
 import NotFound from './components/not-found.js';
 
 /**
@@ -22,8 +21,7 @@ import NotFound from './components/not-found.js';
  */
 var routes = (
     <Route handler={App} >
-        <Route name="mainMenu" path="/" handler={PageMainMenu} />
-        <Route name="party" path="/party" handler={PageParty} />
+        <Route name="main" path="/" handler={PageRoot} />
         <NotFoundRoute handler={NotFound}/>
     </Route>
 );

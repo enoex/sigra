@@ -1,13 +1,17 @@
 /**
- * main-menu.js
- *      Main main-menu component
- * @module components/main-menu
+ * root-main-menu
+ *      Main menu (home)
+ * @module components/root-main-menu
  */
+
 // External Dependencies
 import React from 'react';
 import {RouteHandler} from 'react-router';
 import logger from 'bragi-browser';
+
 import {connect} from 'react-redux';
+
+import * as ACTIONS from '../actions.js';
 
 /**
  *
@@ -15,25 +19,26 @@ import {connect} from 'react-redux';
  *
  */
 var MainMenu = React.createClass({
-    contextTypes: { router: React.PropTypes.func },
+    contextTypes: { router: React.PropTypes.func.isRequired },
 
     componentWillMount: function componentWillMount(){
-        logger.log('components/page-main-menu:componentWillMount', 'called');
+        logger.log('components/root-main-menu:componentWillMount', 'called');
     },
 
     selectPlay: function selectPlay(){
-        logger.log('components/page-main-menu:selectPlay', 'called');
-        this.context.router.transitionTo('party');
+        logger.log('components/root-main-menu:selectPlay', 'called');
+        this.props.dispatch(ACTIONS.mainMenuShowPlay());
     },
     selectAccount: function selectAccount(){
-        logger.log('components/page-main-menu:selectAccount', 'called');
+        logger.log('components/root-main-menu:selectAccount', 'called');
     },
     selectLeaderboard: function selectLeaderboard(){
-        logger.log('components/page-main-menu:selectLeaderboard', 'called');
+        logger.log('components/root-main-menu:selectLeaderboard', 'called');
     },
 
     render: function render(){
-        logger.log('components/page-main-menu:render', 'called');
+        logger.log('components/root-main-menu:render', 'called');
+        const { dispatch } = this.props;
 
         return (
             <div className='main-menu__wrapper'>

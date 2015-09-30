@@ -97,7 +97,7 @@
 
 	var _reactRedux = __webpack_require__(216);
 
-	var _storeJs = __webpack_require__(390);
+	var _storeJs = __webpack_require__(393);
 
 	var _storeJs2 = _interopRequireDefault(_storeJs);
 
@@ -53383,15 +53383,11 @@
 
 	var _componentsAppJs2 = _interopRequireDefault(_componentsAppJs);
 
-	var _componentsPageMainMenuJs = __webpack_require__(388);
+	var _componentsPageRootJs = __webpack_require__(388);
 
-	var _componentsPageMainMenuJs2 = _interopRequireDefault(_componentsPageMainMenuJs);
+	var _componentsPageRootJs2 = _interopRequireDefault(_componentsPageRootJs);
 
-	var _componentsPagePartyJs = __webpack_require__(399);
-
-	var _componentsPagePartyJs2 = _interopRequireDefault(_componentsPagePartyJs);
-
-	var _componentsNotFoundJs = __webpack_require__(389);
+	var _componentsNotFoundJs = __webpack_require__(392);
 
 	var _componentsNotFoundJs2 = _interopRequireDefault(_componentsNotFoundJs);
 
@@ -53403,8 +53399,7 @@
 	var routes = _react2['default'].createElement(
 	    _reactRouter.Route,
 	    { handler: _componentsAppJs2['default'] },
-	    _react2['default'].createElement(_reactRouter.Route, { name: 'mainMenu', path: '/', handler: _componentsPageMainMenuJs2['default'] }),
-	    _react2['default'].createElement(_reactRouter.Route, { name: 'party', path: '/party', handler: _componentsPagePartyJs2['default'] }),
+	    _react2['default'].createElement(_reactRouter.Route, { name: 'main', path: '/', handler: _componentsPageRootJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.NotFoundRoute, { handler: _componentsNotFoundJs2['default'] })
 	);
 
@@ -78255,9 +78250,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * main-menu.js
-	 *      Main main-menu component
-	 * @module components/main-menu
+	 * root.js
+	 *      Main root component
+	 * @module components/root
 	 */
 	// External Dependencies
 	'use strict';
@@ -78265,6 +78260,8 @@
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -78280,6 +78277,222 @@
 
 	var _reactRedux = __webpack_require__(216);
 
+	var _actionsJs = __webpack_require__(389);
+
+	var ACTIONS = _interopRequireWildcard(_actionsJs);
+
+	var _rootMainMenuJs = __webpack_require__(390);
+
+	var _rootMainMenuJs2 = _interopRequireDefault(_rootMainMenuJs);
+
+	var _rootPartyJs = __webpack_require__(391);
+
+	var _rootPartyJs2 = _interopRequireDefault(_rootPartyJs);
+
+	/**
+	 *
+	 * Functionality
+	 *
+	 */
+	var Root = _react2['default'].createClass({
+	    displayName: 'Root',
+
+	    contextTypes: { router: _react2['default'].PropTypes.func.isRequired },
+
+	    componentWillMount: function componentWillMount() {
+	        _bragiBrowser2['default'].log('components/page-root:componentWillMount', 'called');
+	    },
+	    shouldComponentUpdate: function shouldComponentUpdate(nextProps) {
+	        if (nextProps.mainMenu === this.props.mainMenu) {
+	            _bragiBrowser2['default'].log('components/page-root:shouldComponentUpdate', 'false');
+	            return false;
+	        } else {
+	            _bragiBrowser2['default'].log('components/page-root:shouldComponentUpdate', 'true');
+	            return true;
+	        }
+	    },
+
+	    render: function render() {
+	        _bragiBrowser2['default'].log('components/page-root:render:' + this.props.mainMenu.page, 'called | %j', { props: this.props });
+
+	        var dispatch = this.props.dispatch;
+	        var rootHtml = '';
+
+	        switch (this.props.mainMenu.page) {
+	            case 'home':
+	                rootHtml = _react2['default'].createElement(_rootMainMenuJs2['default'], { dispatch: dispatch });
+	                break;
+
+	            case 'party':
+	                rootHtml = _react2['default'].createElement(_rootPartyJs2['default'], { dispatch: dispatch, account: this.props.account });
+	                break;
+
+	            //// TODO: THIS
+	            //case 'party':
+	            //rootHtml = (<Party dispatch={dispatch} account={this.props.account}/>);
+	            //break;
+
+	            default:
+	                rootHtml = _react2['default'].createElement(_rootMainMenuJs2['default'], { dispatch: dispatch });
+	        }
+
+	        return _react2['default'].createElement(
+	            'div',
+	            { className: 'root__wrapper' },
+	            rootHtml
+	        );
+	    }
+	});
+
+	/**
+	 * configure select function and connect to redux
+	 */
+	function select(state) {
+	    _bragiBrowser2['default'].log('components/app:select', 'called: ', state);
+
+	    // TODO: use https://github.com/faassen/reselect and only return certain
+	    // things
+	    return state;
+	}
+	exports['default'] = (0, _reactRedux.connect)(select)(Root);
+	module.exports = exports['default'];
+
+/***/ },
+/* 389 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 *
+	 * actions.js
+	 *      Action constants and action creators
+	 * @module actions
+	 *
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.mainMenuShowHome = mainMenuShowHome;
+	exports.mainMenuShowPlay = mainMenuShowPlay;
+	exports.mainMenuShowParty = mainMenuShowParty;
+	exports.mainMenuShowPartyCreate = mainMenuShowPartyCreate;
+	exports.mainMenuShowAccount = mainMenuShowAccount;
+	exports.mainMenuShowLeaderboard = mainMenuShowLeaderboard;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _loggerJs = __webpack_require__(3);
+
+	var _loggerJs2 = _interopRequireDefault(_loggerJs);
+
+	/**
+	 *
+	 * Messages
+	 *
+	 */
+
+	/**
+	 *
+	 * Out of Game - Main Menu
+	 *
+	 */
+
+	var MAIN_MENU_SHOW_HOME = 'MAIN_MENU_SHOW_HOME';
+	exports.MAIN_MENU_SHOW_HOME = MAIN_MENU_SHOW_HOME;
+	var MAIN_MENU_SHOW_PLAY = 'MAIN_MENU_SHOW_PLAY';
+	exports.MAIN_MENU_SHOW_PLAY = MAIN_MENU_SHOW_PLAY;
+	var MAIN_MENU_SHOW_PARTY = 'MAIN_MENU_SHOW_PARTY';
+	exports.MAIN_MENU_SHOW_PARTY = MAIN_MENU_SHOW_PARTY;
+	var MAIN_MENU_SHOW_PARTY_CREATE = 'MAIN_MENU_SHOW_PARTY_CREATE';
+	exports.MAIN_MENU_SHOW_PARTY_CREATE = MAIN_MENU_SHOW_PARTY_CREATE;
+	var MAIN_MENU_SHOW_ACCOUNT = 'MAIN_MENU_SHOW_ACCOUNT';
+	exports.MAIN_MENU_SHOW_ACCOUNT = MAIN_MENU_SHOW_ACCOUNT;
+	var MAIN_MENU_SHOW_LEADERBOARD = 'MAIN_MENU_SHOW_LEADERBOARD';
+
+	exports.MAIN_MENU_SHOW_LEADERBOARD = MAIN_MENU_SHOW_LEADERBOARD;
+
+	function mainMenuShowHome() {
+	  return { type: MAIN_MENU_SHOW_HOME };
+	}
+
+	/**
+	 * only show play menu if the player has a party selected
+	 */
+
+	function mainMenuShowPlay() {
+	  return function (dispatch, getState) {
+	    if (getState().account.selectedParty) {
+	      return dispatch(mainMenuShowPlay());
+	    } else {
+	      return dispatch(mainMenuShowParty());
+	    }
+	  };
+	}
+
+	function mainMenuShowParty() {
+	  return { type: MAIN_MENU_SHOW_PARTY };
+	}
+
+	function mainMenuShowPartyCreate() {
+	  return { type: MAIN_MENU_SHOW_PARTY_CREATE };
+	}
+
+	function mainMenuShowAccount() {
+	  return { type: MAIN_MENU_SHOW_ACCOUNT };
+	}
+
+	function mainMenuShowLeaderboard() {
+	  return { type: MAIN_MENU_SHOW_LEADERBOARD };
+	}
+
+	/**
+	 * Account
+	 */
+
+	/**
+	 *
+	 * In Game Actions
+	 *
+	 */
+
+/***/ },
+/* 390 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * root-main-menu
+	 *      Main menu (home)
+	 * @module components/root-main-menu
+	 */
+
+	// External Dependencies
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(20);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(176);
+
+	var _bragiBrowser = __webpack_require__(4);
+
+	var _bragiBrowser2 = _interopRequireDefault(_bragiBrowser);
+
+	var _reactRedux = __webpack_require__(216);
+
+	var _actionsJs = __webpack_require__(389);
+
+	var ACTIONS = _interopRequireWildcard(_actionsJs);
+
 	/**
 	 *
 	 * Functionality
@@ -78288,25 +78501,26 @@
 	var MainMenu = _react2['default'].createClass({
 	    displayName: 'MainMenu',
 
-	    contextTypes: { router: _react2['default'].PropTypes.func },
+	    contextTypes: { router: _react2['default'].PropTypes.func.isRequired },
 
 	    componentWillMount: function componentWillMount() {
-	        _bragiBrowser2['default'].log('components/page-main-menu:componentWillMount', 'called');
+	        _bragiBrowser2['default'].log('components/root-main-menu:componentWillMount', 'called');
 	    },
 
 	    selectPlay: function selectPlay() {
-	        _bragiBrowser2['default'].log('components/page-main-menu:selectPlay', 'called');
-	        this.context.router.transitionTo('party');
+	        _bragiBrowser2['default'].log('components/root-main-menu:selectPlay', 'called');
+	        this.props.dispatch(ACTIONS.mainMenuShowPlay());
 	    },
 	    selectAccount: function selectAccount() {
-	        _bragiBrowser2['default'].log('components/page-main-menu:selectAccount', 'called');
+	        _bragiBrowser2['default'].log('components/root-main-menu:selectAccount', 'called');
 	    },
 	    selectLeaderboard: function selectLeaderboard() {
-	        _bragiBrowser2['default'].log('components/page-main-menu:selectLeaderboard', 'called');
+	        _bragiBrowser2['default'].log('components/root-main-menu:selectLeaderboard', 'called');
 	    },
 
 	    render: function render() {
-	        _bragiBrowser2['default'].log('components/page-main-menu:render', 'called');
+	        _bragiBrowser2['default'].log('components/root-main-menu:render', 'called');
+	        var dispatch = this.props.dispatch;
 
 	        return _react2['default'].createElement(
 	            'div',
@@ -78355,7 +78569,135 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 389 */
+/* 391 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * root-party
+	 *      Main menu (home)
+	 * @module components/root-party
+	 */
+
+	// External Dependencies
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _lodash = __webpack_require__(17);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _react = __webpack_require__(20);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(176);
+
+	var _bragiBrowser = __webpack_require__(4);
+
+	var _bragiBrowser2 = _interopRequireDefault(_bragiBrowser);
+
+	var _reactRedux = __webpack_require__(216);
+
+	var _actionsJs = __webpack_require__(389);
+
+	var ACTIONS = _interopRequireWildcard(_actionsJs);
+
+	/**
+	 *
+	 * Functionality
+	 *
+	 */
+	var Party = _react2['default'].createClass({
+	    displayName: 'Party',
+
+	    componentWillMount: function componentWillMount() {
+	        _bragiBrowser2['default'].log('components/root-party:componentWillMount', 'called');
+	    },
+
+	    backClicked: function backClicked() {
+	        this.props.dispatch(ACTIONS.mainMenuShowHome());
+	    },
+	    partyClicked: function partyClicked(i) {
+	        _bragiBrowser2['default'].log('components/root-party:partyClicked', 'called (' + i + ') %j', this.props);
+	        this.props.dispatch(ACTIONS.mainMenuShowPartyCreate());
+	    },
+
+	    render: function render() {
+	        var _this = this;
+
+	        _bragiBrowser2['default'].log('components/root-party:render', 'called %j', this.props);
+	        var dispatch = this.props.dispatch;
+	        var parties = this.props.account.parties;
+
+	        var partyListHtml = _react2['default'].createElement(
+	            'ul',
+	            { className: 'root-party__current-party-list' },
+	            _lodash2['default'].range(this.props.account.maxNumParties).map(function (i) {
+	                return _react2['default'].createElement(
+	                    'li',
+	                    { key: i,
+	                        className: 'root-party__current-party-list-item ' + (parties[i] ? '' : 'root-party__current-party-list-item-empty'),
+	                        onClick: _this.partyClicked.bind(_this, i) },
+	                    parties[i] ? parties[i] : 'Create Party'
+	                );
+	            })
+	        );
+
+	        // right panel HTML is determine by selected party
+	        var rightSidePartyHtml = '';
+
+	        // Render it
+	        return _react2['default'].createElement(
+	            'div',
+	            { className: 'root-party__wrapper' },
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'root-party__inner' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'root-party__current-party-list-wrapper' },
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'root-party__current-party-list-header' },
+	                        _react2['default'].createElement(
+	                            'h2',
+	                            null,
+	                            ' Choose Party '
+	                        )
+	                    ),
+	                    partyListHtml,
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { onClick: this.backClicked, className: 'root-party__current-party-list-back' },
+	                        _react2['default'].createElement(
+	                            'h3',
+	                            null,
+	                            ' ⬅︎  Back '
+	                        )
+	                    )
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'root-party__right-panel-wrapper' },
+	                    rightSidePartyHtml
+	                )
+	            )
+	        );
+	    }
+	});
+
+	exports['default'] = Party;
+	module.exports = exports['default'];
+
+/***/ },
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -78401,7 +78743,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 390 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -78430,19 +78772,19 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _async = __webpack_require__(391);
+	var _async = __webpack_require__(394);
 
 	var _async2 = _interopRequireDefault(_async);
 
 	var _redux = __webpack_require__(224);
 
-	var _reduxThunk = __webpack_require__(393);
+	var _reduxThunk = __webpack_require__(396);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
 	var reducers = {
-	    account: __webpack_require__(394),
-	    mainMenu: __webpack_require__(397)
+	    account: __webpack_require__(397),
+	    mainMenu: __webpack_require__(399)
 	};
 
 	/**
@@ -78481,7 +78823,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 391 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, setImmediate, process) {/*!
@@ -79707,10 +80049,10 @@
 
 	}());
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(392).setImmediate, __webpack_require__(6)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(395).setImmediate, __webpack_require__(6)))
 
 /***/ },
-/* 392 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(6).nextTick;
@@ -79789,10 +80131,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(392).setImmediate, __webpack_require__(392).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(395).setImmediate, __webpack_require__(395).clearImmediate))
 
 /***/ },
-/* 393 */
+/* 396 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -79814,7 +80156,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 394 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -79826,7 +80168,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	  value: true
+	    value: true
 	});
 	exports['default'] = account;
 
@@ -79842,11 +80184,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _immutable = __webpack_require__(395);
+	var _immutable = __webpack_require__(398);
 
 	var _immutable2 = _interopRequireDefault(_immutable);
 
-	var _actionsJs = __webpack_require__(396);
+	var _actionsJs = __webpack_require__(389);
 
 	var ACTIONS = _interopRequireWildcard(_actionsJs);
 
@@ -79855,20 +80197,25 @@
 	 * Reducers
 	 *
 	 */
+	var defaultState = {
+	    parties: [],
+	    maxNumParties: 6,
+	    selectedParty: null
+	};
 
 	function account(state, action) {
-	  if (state === undefined) state = {};
+	    if (state === undefined) state = defaultState;
 
-	  switch (action.type) {
-	    default:
-	      return state;
-	  }
+	    switch (action.type) {
+	        default:
+	            return state;
+	    }
 	}
 
 	module.exports = exports['default'];
 
 /***/ },
-/* 395 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -84833,78 +85180,7 @@
 	}));
 
 /***/ },
-/* 396 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 *
-	 * actions.js
-	 *      Action constants and action creators
-	 * @module actions
-	 *
-	 */
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports.mainMenuShowPlay = mainMenuShowPlay;
-	exports.mainMenuShowParty = mainMenuShowParty;
-	exports.mainMenuShowAccount = mainMenuShowAccount;
-	exports.mainMenuShowLeaderboard = mainMenuShowLeaderboard;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _loggerJs = __webpack_require__(3);
-
-	var _loggerJs2 = _interopRequireDefault(_loggerJs);
-
-	/**
-	 *
-	 * Messages
-	 *
-	 */
-
-	/**
-	 *
-	 * Out of Game - Main Menu
-	 *
-	 */
-
-	var MAIN_MENU_SHOW_PLAY = 'MAIN_MENU_SHOW_PLAY';
-	exports.MAIN_MENU_SHOW_PLAY = MAIN_MENU_SHOW_PLAY;
-	var MAIN_MENU_SHOW_PARTY = 'MAIN_MENU_SHOW_PARTY';
-	exports.MAIN_MENU_SHOW_PARTY = MAIN_MENU_SHOW_PARTY;
-	var MAIN_MENU_SHOW_ACCOUNT = 'MAIN_MENU_SHOW_ACCOUNT';
-	exports.MAIN_MENU_SHOW_ACCOUNT = MAIN_MENU_SHOW_ACCOUNT;
-	var MAIN_MENU_SHOW_LEADERBOARD = 'MAIN_MENU_SHOW_LEADERBOARD';
-
-	exports.MAIN_MENU_SHOW_LEADERBOARD = MAIN_MENU_SHOW_LEADERBOARD;
-
-	function mainMenuShowPlay() {
-	  return { type: MAIN_MENU_SHOW_PLAY };
-	}
-
-	function mainMenuShowParty() {
-	  return { type: MAIN_MENU_SHOW_PARTY };
-	}
-
-	function mainMenuShowAccount() {
-	  return { type: MAIN_MENU_SHOW_ACCOUNT };
-	}
-
-	function mainMenuShowLeaderboard() {
-	  return { type: MAIN_MENU_SHOW_LEADERBOARD };
-	}
-
-	/**
-	 *
-	 * In Game Actions
-	 *
-	 */
-
-/***/ },
-/* 397 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -84915,7 +85191,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	  value: true
+	    value: true
 	});
 	exports['default'] = mainMenu;
 
@@ -84931,11 +85207,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _immutable = __webpack_require__(395);
+	var _immutable = __webpack_require__(398);
 
 	var _immutable2 = _interopRequireDefault(_immutable);
 
-	var _actionsJs = __webpack_require__(396);
+	var _actionsJs = __webpack_require__(389);
 
 	var ACTIONS = _interopRequireWildcard(_actionsJs);
 
@@ -84947,88 +85223,36 @@
 	/**
 	 * Main menu reducer
 	 */
+	// TODO: Load / save state with localforage? Or set manually for testing
+	var defaultState = {
+	    //page: 'home'
+	    page: 'party'
+	};
 
 	function mainMenu(state, action) {
-	  if (state === undefined) state = [];
+	    if (state === undefined) state = defaultState;
 
-	  switch (action.type) {
-	    default:
-	      return state;
-	  }
+	    switch (action.type) {
+	        case ACTIONS.MAIN_MENU_SHOW_HOME:
+	            return { page: 'home' };
+	        case ACTIONS.MAIN_MENU_SHOW_PLAY:
+	            return { page: 'play' };
+
+	        case ACTIONS.MAIN_MENU_SHOW_PARTY:
+	            return { page: 'party' };
+	        case ACTIONS.MAIN_MENU_SHOW_PARTY_CREATE:
+	            return { page: 'party-create' };
+
+	        case ACTIONS.MAIN_MENU_SHOW_ACCOUNT:
+	            return { page: 'account' };
+	        case ACTIONS.MAIN_MENU_SHOW_LEADERBOARD:
+	            return { page: 'leaderboard' };
+
+	        default:
+	            return state;
+	    }
 	}
 
-	module.exports = exports['default'];
-
-/***/ },
-/* 398 */,
-/* 399 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * party.js
-	 *      Main party component
-	 * @module components/party
-	 */
-	// External Dependencies
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _react = __webpack_require__(20);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(176);
-
-	var _bragiBrowser = __webpack_require__(4);
-
-	var _bragiBrowser2 = _interopRequireDefault(_bragiBrowser);
-
-	var _reactRedux = __webpack_require__(216);
-
-	/**
-	 *
-	 * Functionality
-	 *
-	 */
-	var Party = _react2['default'].createClass({
-	    displayName: 'Party',
-
-	    contextTypes: { router: _react2['default'].PropTypes.func },
-
-	    componentWillMount: function componentWillMount() {
-	        _bragiBrowser2['default'].log('components/page-party:componentWillMount', 'called');
-	    },
-
-	    selectPlay: function selectPlay() {
-	        _bragiBrowser2['default'].log('components/page-party:selectPlay', 'called');
-	        // TODO: Go to play
-	    },
-	    selectAccount: function selectAccount() {
-	        _bragiBrowser2['default'].log('components/page-party:selectAccount', 'called');
-	        // TODO: Go to play
-	    },
-	    selectLeaderboard: function selectLeaderboard() {
-	        _bragiBrowser2['default'].log('components/page-party:selectLeaderboard', 'called');
-	        // TODO: Go to play
-	    },
-
-	    render: function render() {
-	        _bragiBrowser2['default'].log('components/page-party:render', 'called');
-
-	        return _react2['default'].createElement(
-	            'div',
-	            { className: 'page-party__wrapper' },
-	            'Party'
-	        );
-	    }
-	});
-
-	exports['default'] = Party;
 	module.exports = exports['default'];
 
 /***/ }

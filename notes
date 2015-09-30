@@ -1,0 +1,4 @@
+1) React Router. Different pages
+2) Single main component, render different components based on state (not props)
+3) Single main component, same as 2, but listen for prop changes with redux
+4) Single main component, but use props instead of state - use redux to pass down props

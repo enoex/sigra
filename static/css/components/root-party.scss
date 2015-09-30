@@ -1,0 +1,119 @@
+/* =========================================================================
+ *
+ * root-party
+ * 
+ * ========================================================================= */
+/*
+    TODO: Combine this and the main-menu.scss. Pull out shared styles
+*/
+
+$MENU_WIDTH: 760px;
+
+.root-party__wrapper {
+    @include user-select(none);
+    @include position(absolute, 10px 0 10px 50%);
+    color: $COLOR_1;
+    margin-left: -$MENU_WIDTH/2;
+    width: $MENU_WIDTH;
+}
+.root-party__inner {
+    @include position(absolute, 0);
+    border: 2px solid $COLOR_1;
+
+    &:before {
+        @include position(absolute, -6px -6px -6px -6px);
+        content: " ";
+        z-index: -1;
+        border: 6px solid #000000;
+    }
+}
+
+/*
+ * Current Party list
+ */
+$ROOT_PARTY_LIST_WIDTH: 300px;
+.root-party__current-party-list-wrapper {
+    @include position(absolute, 0 auto 0 0);
+    border-right: 1px solid $COLOR_1;
+    width: $ROOT_PARTY_LIST_WIDTH;
+    z-index: 10;
+}
+
+
+/* Header / Footer */
+$ROOT_PARTY_LIST_HEADER_HEIGHT: 56px;
+.root-party__current-party-list-header {
+    @include position(absolute, 0 0 auto 0);
+    border-bottom: 1px solid $COLOR_1;
+    height: $ROOT_PARTY_LIST_HEADER_HEIGHT;
+
+    h2 {
+        cursor: default;
+        padding-top: 0em;
+        margin-top: 0.5em;
+        text-align: center;
+    }
+}
+$ROOT_PARTY_LIST_FOOTER_HEIGHT: 40px;
+.root-party__current-party-list-back {
+    @include position(absolute, auto 0 0 0);
+    border-top: 1px solid $COLOR_1;
+    height: $ROOT_PARTY_LIST_FOOTER_HEIGHT;
+
+    h3 {
+        cursor: default;
+        padding: 0 0 0 1em;
+        margin-top: 0.4em;
+    }
+}
+
+/* List */
+.root-party__current-party-list {
+    @include position(absolute, ($ROOT_PARTY_LIST_HEADER_HEIGHT + 10) 0 ($ROOT_PARTY_LIST_HEADER_HEIGHT - 10) 0);
+    overflow: auto;
+    z-index: 10;
+}
+.root-party__current-party-list-item {
+    background: #000000;
+    border: 1px solid $COLOR_1;
+    cursor: pointer;
+    position: relative;
+    padding: 1em;
+    margin: 1em;
+    text-align: center;
+
+    &:before {
+        @include position(absolute, -6px -6px -6px -6px);
+        content: " ";
+        z-index: -1;
+        border: 6px solid #000000;
+    }
+}
+.root-party__current-party-list-item:hover{
+    border: 1px solid #000000;
+    background: $COLOR_1;
+    color: #000000;
+    &:before {
+        border: 6px solid $COLOR_1;
+    }
+}
+
+/* Empty Item */
+.root-party__current-party-list-item-empty, 
+.root-party__current-party-list-item-empty:hover {
+    color: rgba(255,255,255,0.5);
+    border: 1px dashed rgba(255,255,255,0.5);
+}
+.root-party__current-party-list-item-empty:hover {
+    background: none;
+    color: $COLOR_1;
+    &:before { 
+        border: 1px solid $COLOR_1;
+    }
+}
+
+/* Right Side */
+.root-party__right-panel-wrapper {
+    @include position(absolute, 0 0 0 $ROOT_PARTY_LIST_WIDTH);
+    z-index: 10;
+}

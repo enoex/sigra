@@ -4,9 +4,9 @@
  * 
  * ========================================================================= */
 $MENU_WIDTH: 760px;
-$COLOR_1: #c49a6c;
 
 .main-menu__wrapper {
+    @include user-select(none);
     @include position(absolute, 0 0 0 50%);
     color: $COLOR_1;
     margin-left: -$MENU_WIDTH/2;
@@ -45,7 +45,7 @@ $COLOR_1: #c49a6c;
 
 .main-menu__list-item {
     background: #000000;
-    border: 1px solid #c49a6c;
+    border: 1px solid $COLOR_1;
     cursor: pointer;
     position: relative;
     padding: 1em;
