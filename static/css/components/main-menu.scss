@@ -1,0 +1,70 @@
+/* =========================================================================
+ *
+ * main-menu.scss
+ * 
+ * ========================================================================= */
+$MENU_WIDTH: 760px;
+$COLOR_1: #c49a6c;
+
+.main-menu__wrapper {
+    @include position(absolute, 0 0 0 50%);
+    color: $COLOR_1;
+    margin-left: -$MENU_WIDTH/2;
+    width: $MENU_WIDTH;
+}
+
+.main-menu__title {
+    $TEXT_SHADOW_R: 5px;
+    $TEXT_SHADOW_COLOR: #000000;
+
+    @include position(absolute, 19px 0 auto 0);
+    font-size: 5em;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    text-shadow: (-$TEXT_SHADOW_R) (-$TEXT_SHADOW_R) 0 $TEXT_SHADOW_COLOR, 
+                (-$TEXT_SHADOW_R) ($TEXT_SHADOW_R) 0 $TEXT_SHADOW_COLOR, 
+                ($TEXT_SHADOW_R) (-$TEXT_SHADOW_R) 0 $TEXT_SHADOW_COLOR, 
+                ($TEXT_SHADOW_R) ($TEXT_SHADOW_R) 0 $TEXT_SHADOW_COLOR, 
+                (-$TEXT_SHADOW_R) (-$TEXT_SHADOW_R) 0 $TEXT_SHADOW_COLOR, 
+                0 0 1px $TEXT_SHADOW_COLOR;
+    z-index: 5;
+}
+
+.main-menu__background {
+    @include position(absolute, 20px 0 0 195px);
+    background: url("../img/mountain.png") no-repeat;
+    z-index: 1;
+}
+
+.main-menu__list-wrapper {
+    @include position(absolute, 280px 0 0 0);
+    z-index: 10;
+}
+
+
+.main-menu__list-item {
+    background: #000000;
+    border: 1px solid #c49a6c;
+    cursor: pointer;
+    position: relative;
+    padding: 1em;
+    margin: 1em;
+    text-align: center;
+
+    &:before {
+        @include position(absolute, -6px -6px -6px -6px);
+        content: " ";
+        z-index: -1;
+        border: 6px solid #000000;
+    }
+}
+
+.main-menu__list-item:hover {
+    border: 1px solid #000000;
+    background: $COLOR_1;
+    color: #000000;
+    &:before {
+        border: 6px solid $COLOR_1;
+    }
+}

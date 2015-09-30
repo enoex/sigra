@@ -1,0 +1,34 @@
+# Sigra
+-Procedurally generated enemies? Match making...ELO type system. Generates players based on your group's combined weightedscore(?)
+-What's the draw? Items, weapons? Virtual progression? 
+-Team based or 1v1?
+    -If team based, need friends system (probably)
+
+IDEAS:
+    -Team based player vs player
+    -1 v 1
+    -1 + AI vs. 1 + AI. You choose your team, and you face other players.   
+        -Can pick classes - e.g., enchanter, wizard, rogue, etc. 
+        Idea 1) You can play as one of them
+             2) You can play as all of them
+             3) You play as one of them, and the other AI is just like a gimped version of the class
+
+    -1 v 1. Pick n characters.
+        -Very simple input. Tap unit to make it attack or heal. Can do things like longer you wait to tap, more damage it does
+        -How to handle targetting? If it's 6v6, what do you do?
+            1) You have a hero, and the n units are like minions (e.g., M:TG). All attacks are directed at you, so it makes healing and shit easier.
+                -Different units could add to your abilities. E.g., tanks give you more armor / health
+                -Different types of classes could give different buffs
+                -Could have a whole slew of unique classes...imagine a charm - when they use the unit, it damages them
+            2) Automatic, based on threat; it could be like NPCs in MMOs - targetting is based on threat level.
+                -Healers / DPS / etc generate certain amount of threat based on damage done
+                TWO Sides: threat meter for enemies, and "threat" for own group. 
+                    -How does healer decide who to heal? - Auto based on inverse threat, health, priority, etc.
+                        -Could be frustrating, because you cannot yourself control it.
+                        -What if you could drag from unit to unit to do the targetting?
+
+
+# Ramblings:
+Metaphors...counterstrike. CS is a team based game, and although you act alone, could we view a CS team as a single entity? Imagine watching a professional team - they play together so well, it's as if it is a single cohesive unit.
+    When a player dies, the team can still continue, still can win.
+    -Stategies are more important
