@@ -1,6 +1,8 @@
 node_modules
 *.swp
+inspiration
 dump.rdb
+.psd
 .DS_Store
 .Trashes
 .DS_Store?

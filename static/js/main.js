@@ -15,7 +15,7 @@ import logger from './logger.js'; window.logger = logger;
 
 import d3 from 'd3'; window.d3 = d3;
 import _ from 'lodash'; window._ = _;
-import $ from 'jQuery'; window.$ = $;
+import $ from 'jquery'; window.$ = $;
 
 import React from 'react';
 import router from './router.js';
