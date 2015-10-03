@@ -78289,6 +78289,10 @@
 
 	var _rootPartyJs2 = _interopRequireDefault(_rootPartyJs);
 
+	var _rootPartyCreateJs = __webpack_require__(401);
+
+	var _rootPartyCreateJs2 = _interopRequireDefault(_rootPartyCreateJs);
+
 	/**
 	 *
 	 * Functionality
@@ -78327,10 +78331,12 @@
 	                rootHtml = _react2['default'].createElement(_rootPartyJs2['default'], { dispatch: dispatch, account: this.props.account });
 	                break;
 
-	            //// TODO: THIS
-	            //case 'party':
-	            //rootHtml = (<Party dispatch={dispatch} account={this.props.account}/>);
-	            //break;
+	            case 'party-create':
+	                //TODO : pass in possible classes / (races?)
+	                rootHtml = _react2['default'].createElement(_rootPartyCreateJs2['default'], { dispatch: dispatch,
+	                    classes: this.props.classes,
+	                    account: this.props.account });
+	                break;
 
 	            default:
 	                rootHtml = _react2['default'].createElement(_rootMainMenuJs2['default'], { dispatch: dispatch });
@@ -78652,6 +78658,17 @@
 
 	        // right panel HTML is determine by selected party
 	        var rightSidePartyHtml = '';
+	        if (!this.props.account.selectedParty) {
+	            rightSidePartyHtml = _react2['default'].createElement(
+	                'div',
+	                { className: 'root-party__right-panel' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'root-party__right-panel-background' },
+	                    _react2['default'].createElement('img', { src: '/static/img/map-no-border.png' })
+	                )
+	            );
+	        }
 
 	        // Render it
 	        return _react2['default'].createElement(
@@ -78784,6 +78801,7 @@
 
 	var reducers = {
 	    account: __webpack_require__(397),
+	    classes: __webpack_require__(402),
 	    mainMenu: __webpack_require__(399)
 	};
 
@@ -85226,7 +85244,9 @@
 	// TODO: Load / save state with localforage? Or set manually for testing
 	var defaultState = {
 	    //page: 'home'
-	    page: 'party'
+
+	    //page: 'party'
+	    page: 'party-create'
 	};
 
 	function mainMenu(state, action) {
@@ -85248,6 +85268,308 @@
 	        case ACTIONS.MAIN_MENU_SHOW_LEADERBOARD:
 	            return { page: 'leaderboard' };
 
+	        default:
+	            return state;
+	    }
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 400 */,
+/* 401 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * party-create
+	 *      Main menu (home)
+	 * @module components/party-create
+	 */
+
+	// External Dependencies
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _lodash = __webpack_require__(17);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _react = __webpack_require__(20);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(176);
+
+	var _bragiBrowser = __webpack_require__(4);
+
+	var _bragiBrowser2 = _interopRequireDefault(_bragiBrowser);
+
+	var _reactRedux = __webpack_require__(216);
+
+	var _actionsJs = __webpack_require__(389);
+
+	var ACTIONS = _interopRequireWildcard(_actionsJs);
+
+	/**
+	 *
+	 * Functionality
+	 *
+	 */
+	var PartyCreate = _react2['default'].createClass({
+	    displayName: 'PartyCreate',
+
+	    componentWillMount: function componentWillMount() {
+	        _bragiBrowser2['default'].log('components/party-create:componentWillMount', 'called');
+	    },
+
+	    backClicked: function backClicked() {
+	        this.props.dispatch(ACTIONS.mainMenuShowParty());
+	    },
+
+	    render: function render() {
+	        _bragiBrowser2['default'].log('components/party-create:render', 'called %j', this.props);
+	        var dispatch = this.props.dispatch;
+	        var parties = this.props.account.parties;
+
+	        var partyListHtml = _react2['default'].createElement(
+	            'ul',
+	            { className: 'party-create__current-party-list' },
+	            _lodash2['default'].range(this.props.account.maxNumParties).map(function (i) {
+	                return _react2['default'].createElement(
+	                    'li',
+	                    { key: i,
+	                        className: 'party-create__current-party-list-item ' + (parties[i] ? '' : 'party-create__current-party-list-item-empty') },
+	                    parties[i] ? parties[i] : 'Create Party'
+	                );
+	            })
+	        );
+
+	        // Available classes. TODO: Filter based on filter
+	        var classesListHtml = this.props.classes.map(function (d) {
+	            return _react2['default'].createElement(
+	                'div',
+	                { className: 'party-create__class-item' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'party-create__class-item-name' },
+	                    d.name
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'party-create__class-item-description' },
+	                    d.description
+	                )
+	            );
+	        });
+
+	        // right panel HTML is determine by selected party
+	        var rightSidePartyHtml = '';
+	        rightSidePartyHtml = _react2['default'].createElement(
+	            'div',
+	            { className: 'party-create__right-panel' },
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'party-create__class-items-wrapper' },
+	                classesListHtml
+	            )
+	        );
+
+	        // Render it
+	        return _react2['default'].createElement(
+	            'div',
+	            { className: 'party-create__wrapper' },
+	            _react2['default'].createElement(
+	                'div',
+	                { className: 'party-create__inner' },
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'party-create__left-panel-wrapper' },
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'party-create__header-wrapper' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__title' },
+	                            _react2['default'].createElement(
+	                                'h2',
+	                                null,
+	                                ' Members '
+	                            )
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'party-create__member-list-wrapper' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__member-list-item' },
+	                            'Item'
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__member-list-item' },
+	                            'Item'
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__member-list-item' },
+	                            'Item'
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__member-list-item party-create__member-list-item--empty' },
+	                            'Empty'
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__member-list-item party-create__member-list-item--empty' },
+	                            'Empty'
+	                        )
+	                    )
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'party-create__right-panel-wrapper' },
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'party-create__right-panel-header' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__right-panel-header-item header-item-all header-item-active' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'party-create__right-panel-header-item-inner' },
+	                                'All Classes'
+	                            )
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__right-panel-header-item header-item-tank' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'party-create__right-panel-header-item-inner' },
+	                                'Tank'
+	                            )
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__right-panel-header-item header-item-heal' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'party-create__right-panel-header-item-inner' },
+	                                'Heal'
+	                            )
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__right-panel-header-item header-item-damage' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'party-create__right-panel-header-item-inner' },
+	                                'Damage'
+	                            )
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__right-panel-header-item header-item-utility' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'party-create__right-panel-header-item-inner' },
+	                                'Uility'
+	                            )
+	                        ),
+	                        _react2['default'].createElement('div', { className: 'clear' })
+	                    ),
+	                    rightSidePartyHtml
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'party-create__footer--wrapper' },
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { onClick: this.backClicked, className: 'party-create__current-party-list-back' },
+	                        _react2['default'].createElement(
+	                            'h3',
+	                            null,
+	                            ' ⬅︎  Back '
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { onClick: this.backClicked,
+	                            className: 'party-create__current-party-list-next' },
+	                        _react2['default'].createElement(
+	                            'h3',
+	                            null,
+	                            ' Create ➡︎'
+	                        )
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
+	exports['default'] = PartyCreate;
+	module.exports = exports['default'];
+
+/***/ },
+/* 402 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Reducer function for classes / class info
+	 * @module reducers/classes
+	 *
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports['default'] = classes;
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _loggerJs = __webpack_require__(3);
+
+	var _loggerJs2 = _interopRequireDefault(_loggerJs);
+
+	var _lodash = __webpack_require__(17);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _immutable = __webpack_require__(398);
+
+	var _immutable2 = _interopRequireDefault(_immutable);
+
+	var _actionsJs = __webpack_require__(389);
+
+	var ACTIONS = _interopRequireWildcard(_actionsJs);
+
+	/**
+	 *
+	 * Reducers
+	 *
+	 */
+	// TODO: get from server / local data file
+	var defaultState = {
+	    party: []
+	};
+
+	function classes(state, action) {
+	    if (state === undefined) state = defaultState;
+
+	    switch (action.type) {
 	        default:
 	            return state;
 	    }

@@ -53,6 +53,15 @@ var Party = React.createClass({
 
         // right panel HTML is determine by selected party
         let rightSidePartyHtml = '';
+        if(!this.props.account.selectedParty){
+            rightSidePartyHtml = (
+                <div className='root-party__right-panel'>
+                    <div className='root-party__right-panel-background'>
+                        <img src='/static/img/map-no-border.png' />
+                    </div>
+                </div>
+            );
+        }
 
         // Render it
         return (
@@ -64,7 +73,7 @@ var Party = React.createClass({
                         </div>
 
                         {partyListHtml}
-                        
+
                         <div onClick={this.backClicked} className='root-party__current-party-list-back'>
                             <h3> ⬅︎  Back </h3>
                         </div>

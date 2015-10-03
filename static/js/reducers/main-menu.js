@@ -20,7 +20,9 @@ import * as ACTIONS from '../actions.js';
 // TODO: Load / save state with localforage? Or set manually for testing
 const defaultState = {
     //page: 'home'
-    page: 'party'
+
+    //page: 'party'
+    page: 'party-create'
 };
 
 export default function mainMenu ( state=defaultState, action ){

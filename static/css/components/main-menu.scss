@@ -15,7 +15,7 @@ $MENU_WIDTH: 760px;
 
 .main-menu__title {
     $TEXT_SHADOW_R: 5px;
-    $TEXT_SHADOW_COLOR: #000000;
+    $TEXT_SHADOW_COLOR: $BACKGROUND_COLOR;
 
     @include position(absolute, 19px 0 auto 0);
     font-size: 5em;
@@ -44,7 +44,7 @@ $MENU_WIDTH: 760px;
 
 
 .main-menu__list-item {
-    background: #000000;
+    background: $BACKGROUND_COLOR;
     border: 1px solid $COLOR_1;
     cursor: pointer;
     position: relative;
@@ -56,14 +56,14 @@ $MENU_WIDTH: 760px;
         @include position(absolute, -6px -6px -6px -6px);
         content: " ";
         z-index: -1;
-        border: 6px solid #000000;
+        border: 6px solid $BACKGROUND_COLOR;
     }
 }
 
 .main-menu__list-item:hover {
-    border: 1px solid #000000;
+    border: 1px solid $BACKGROUND_COLOR;
     background: $COLOR_1;
-    color: #000000;
+    color: $BACKGROUND_COLOR;
     &:before {
         border: 6px solid $COLOR_1;
     }

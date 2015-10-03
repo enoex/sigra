@@ -27,10 +27,6 @@
 // ======================================
 @import "base/base";
 
-html, body {
-    background: #000000;
-}
-
 // ======================================
 //
 // Copmonents
@@ -38,3 +34,4 @@ html, body {
 // ======================================
 @import "./components/main-menu.scss";
 @import "./components/root-party.scss";
+@import "./components/root-party-create.scss";

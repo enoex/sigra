@@ -13,6 +13,7 @@ import * as ACTIONS from '../actions.js';
 
 import MainMenu from './root-main-menu.js';
 import Party from './root-party.js';
+import PartyCreate from './root-party-create.js';
 
 /**
  *
@@ -52,10 +53,14 @@ var Root = React.createClass({
                 rootHtml = (<Party dispatch={dispatch} account={this.props.account}/>);
                 break;
 
-            //// TODO: THIS
-            //case 'party':
-                //rootHtml = (<Party dispatch={dispatch} account={this.props.account}/>);
-                //break;
+            case 'party-create':
+                //TODO : pass in possible classes / (races?)
+                rootHtml = (
+                    <PartyCreate dispatch={dispatch}
+                        classes={this.props.classes}
+                        account={this.props.account}/>
+                );
+                break;
 
             default:
                 rootHtml = (<MainMenu dispatch={dispatch}/>);
