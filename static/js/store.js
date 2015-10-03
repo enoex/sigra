@@ -18,7 +18,8 @@ import thunk from 'redux-thunk';
 var reducers = {
     account: require('./reducers/account'),
     classes: require('./reducers/classes'),
-    mainMenu: require('./reducers/main-menu')
+    mainMenu: require('./reducers/main-menu'),
+    partyCreate: require('./reducers/party-create')
 };
 
 /**

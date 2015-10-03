@@ -57431,23 +57431,25 @@
 
 	/* eslint-disable no-console */
 
-	function getUndefinedStateErrorMessage(key, action) {
+	function getErrorMessage(key, action) {
 	  var actionType = action && action.type;
 	  var actionName = actionType && '"' + actionType.toString() + '"' || 'an action';
 
 	  return 'Reducer "' + key + '" returned undefined handling ' + actionName + '. ' + 'To ignore an action, you must explicitly return the previous state.';
 	}
 
-	function getUnexpectedStateKeyWarningMessage(inputState, outputState, action) {
+	function verifyStateShape(inputState, outputState, action) {
 	  var reducerKeys = Object.keys(outputState);
 	  var argumentName = action && action.type === _createStore.ActionTypes.INIT ? 'initialState argument passed to createStore' : 'previous state received by the reducer';
 
 	  if (reducerKeys.length === 0) {
-	    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
+	    console.error('Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.');
+	    return;
 	  }
 
 	  if (!_utilsIsPlainObject2['default'](inputState)) {
-	    return 'The ' + argumentName + ' has unexpected type of "' + ({}).toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
+	    console.error('The ' + argumentName + ' has unexpected type of "' + ({}).toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"'));
+	    return;
 	  }
 
 	  var unexpectedKeys = Object.keys(inputState).filter(function (key) {
@@ -57455,24 +57457,8 @@
 	  });
 
 	  if (unexpectedKeys.length > 0) {
-	    return 'Unexpected ' + (unexpectedKeys.length > 1 ? 'keys' : 'key') + ' ' + ('"' + unexpectedKeys.join('", "') + '" found in ' + argumentName + '. ') + 'Expected to find one of the known reducer keys instead: ' + ('"' + reducerKeys.join('", "') + '". Unexpected keys will be ignored.');
+	    console.error('Unexpected ' + (unexpectedKeys.length > 1 ? 'keys' : 'key') + ' ' + ('"' + unexpectedKeys.join('", "') + '" found in ' + argumentName + '. ') + 'Expected to find one of the known reducer keys instead: ' + ('"' + reducerKeys.join('", "') + '". Unexpected keys will be ignored.'));
 	  }
-	}
-
-	function assertReducerSanity(reducers) {
-	  Object.keys(reducers).forEach(function (key) {
-	    var reducer = reducers[key];
-	    var initialState = reducer(undefined, { type: _createStore.ActionTypes.INIT });
-
-	    if (typeof initialState === 'undefined') {
-	      throw new Error('Reducer "' + key + '" returned undefined during initialization. ' + 'If the state passed to the reducer is undefined, you must ' + 'explicitly return the initial state. The initial state may ' + 'not be undefined.');
-	    }
-
-	    var type = '@@redux/PROBE_UNKNOWN_ACTION_' + Math.random().toString(36).substring(7).split('').join('.');
-	    if (typeof reducer(undefined, { type: type }) === 'undefined') {
-	      throw new Error('Reducer "' + key + '" returned undefined when probed with a random type. ' + ('Don\'t try to handle ' + _createStore.ActionTypes.INIT + ' or other actions in "redux/*" ') + 'namespace. They are considered private. Instead, you must return the ' + 'current state for any unknown actions, unless it is undefined, ' + 'in which case you must return the initial state, regardless of the ' + 'action type. The initial state may not be undefined.');
-	    }
-	  });
 	}
 
 	/**
@@ -57498,11 +57484,17 @@
 	  });
 	  var sanityError;
 
-	  try {
-	    assertReducerSanity(finalReducers);
-	  } catch (e) {
-	    sanityError = e;
-	  }
+	  Object.keys(finalReducers).forEach(function (key) {
+	    var reducer = finalReducers[key];
+	    if (!sanityError && typeof reducer(undefined, { type: _createStore.ActionTypes.INIT }) === 'undefined') {
+	      sanityError = new Error('Reducer "' + key + '" returned undefined during initialization. ' + 'If the state passed to the reducer is undefined, you must ' + 'explicitly return the initial state. The initial state may ' + 'not be undefined.');
+	    }
+
+	    var type = '@@redux/PROBE_UNKNOWN_ACTION_' + Math.random().toString(36).substring(7).split('').join('.');
+	    if (!sanityError && typeof reducer(undefined, { type: type }) === 'undefined') {
+	      sanityError = new Error('Reducer "' + key + '" returned undefined when probed with a random type. ' + ('Don\'t try to handle ' + _createStore.ActionTypes.INIT + ' or other actions in "redux/*" ') + 'namespace. They are considered private. Instead, you must return the ' + 'current state for any unknown actions, unless it is undefined, ' + 'in which case you must return the initial state, regardless of the ' + 'action type. The initial state may not be undefined.');
+	    }
+	  });
 
 	  var defaultState = _utilsMapValues2['default'](finalReducers, function () {
 	    return undefined;
@@ -57514,21 +57506,16 @@
 	    if (sanityError) {
 	      throw sanityError;
 	    }
-
 	    var finalState = _utilsMapValues2['default'](finalReducers, function (reducer, key) {
 	      var newState = reducer(state[key], action);
 	      if (typeof newState === 'undefined') {
-	        var errorMessage = getUndefinedStateErrorMessage(key, action);
-	        throw new Error(errorMessage);
+	        throw new Error(getErrorMessage(key, action));
 	      }
 	      return newState;
 	    });
 
 	    if (process.env.NODE_ENV !== 'production') {
-	      var warningMessage = getUnexpectedStateKeyWarningMessage(state, finalState, action);
-	      if (warningMessage) {
-	        console.error(warningMessage);
-	      }
+	      verifyStateShape(state, finalState, action);
 	    }
 
 	    return finalState;
@@ -78348,6 +78335,7 @@
 	                //TODO : pass in possible classes / (races?)
 	                rootHtml = _react2['default'].createElement(_rootPartyCreateJs2['default'], { dispatch: dispatch,
 	                    classes: this.props.classes,
+	                    partyCreate: this.props.partyCreate,
 	                    account: this.props.account });
 	                break;
 
@@ -78786,17 +78774,17 @@
 	    render: function render() {
 	        _bragiBrowser2['default'].log('components/party-create:render', 'called %j', this.props);
 	        var dispatch = this.props.dispatch;
-	        var parties = this.props.account.parties;
+	        var members = this.props.partyCreate.members;
 
 	        var partyListHtml = _react2['default'].createElement(
 	            'ul',
-	            { className: 'party-create__current-party-list' },
-	            _lodash2['default'].range(this.props.account.maxNumParties).map(function (i) {
+	            { className: 'party-create__member-list-wrapper' },
+	            _lodash2['default'].range(this.props.partyCreate.maxMembers).map(function (i) {
 	                return _react2['default'].createElement(
 	                    'li',
 	                    { key: i,
-	                        className: 'party-create__current-party-list-item ' + (parties[i] ? '' : 'party-create__current-party-list-item-empty') },
-	                    parties[i] ? parties[i] : 'Create Party'
+	                        className: 'party-create__member-list-item ' + (members[i] ? '' : 'party-create__member-list-item--empty') },
+	                    members[i] ? members[i] : 'Empty'
 	                );
 	            })
 	        );
@@ -78854,35 +78842,7 @@
 	                            )
 	                        )
 	                    ),
-	                    _react2['default'].createElement(
-	                        'div',
-	                        { className: 'party-create__member-list-wrapper' },
-	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'party-create__member-list-item' },
-	                            'Item'
-	                        ),
-	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'party-create__member-list-item' },
-	                            'Item'
-	                        ),
-	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'party-create__member-list-item' },
-	                            'Item'
-	                        ),
-	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'party-create__member-list-item party-create__member-list-item--empty' },
-	                            'Empty'
-	                        ),
-	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'party-create__member-list-item party-create__member-list-item--empty' },
-	                            'Empty'
-	                        )
-	                    )
+	                    partyListHtml
 	                ),
 	                _react2['default'].createElement(
 	                    'div',
@@ -79059,7 +79019,8 @@
 	var reducers = {
 	    account: __webpack_require__(398),
 	    classes: __webpack_require__(400),
-	    mainMenu: __webpack_require__(401)
+	    mainMenu: __webpack_require__(401),
+	    partyCreate: __webpack_require__(403)
 	};
 
 	/**
@@ -85496,9 +85457,27 @@
 	 *
 	 */
 	// TODO: get from server / local data file
-	var defaultState = {
-	    party: []
-	};
+	var defaultState = [{
+	    name: 'Warrior',
+	    icon: 'warrior',
+	    description: 'Increases your defense',
+	    timer: 8
+	}, {
+	    name: 'Ranger',
+	    icon: 'ranger',
+	    description: 'Fast firing archer',
+	    timer: 3
+	}, {
+	    name: 'Wizard',
+	    icon: 'wizard',
+	    description: 'Poweful arcane based spell caster',
+	    timer: 10
+	}, {
+	    name: 'Cleric',
+	    icon: 'cleric',
+	    description: 'Restores health',
+	    timer: 8
+	}];
 
 	function classes(state, action) {
 	    if (state === undefined) state = defaultState;
@@ -85582,6 +85561,65 @@
 	        case ACTIONS.MAIN_MENU_SHOW_LEADERBOARD:
 	            return { page: 'leaderboard' };
 
+	        default:
+	            return state;
+	    }
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 402 */,
+/* 403 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Reducer function for create party process
+	 * @module reducers/party-create
+	 *
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports['default'] = classes;
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _loggerJs = __webpack_require__(3);
+
+	var _loggerJs2 = _interopRequireDefault(_loggerJs);
+
+	var _lodash = __webpack_require__(17);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _immutable = __webpack_require__(399);
+
+	var _immutable2 = _interopRequireDefault(_immutable);
+
+	var _actionsJs = __webpack_require__(389);
+
+	var ACTIONS = _interopRequireWildcard(_actionsJs);
+
+	/**
+	 *
+	 * Reducers
+	 *
+	 */
+	// TODO: get from server / local data file
+	var defaultState = {
+	    maxMembers: 5,
+	    members: []
+	};
+
+	function classes(state, action) {
+	    if (state === undefined) state = defaultState;
+
+	    switch (action.type) {
 	        default:
 	            return state;
 	    }

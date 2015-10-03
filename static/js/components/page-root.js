@@ -58,6 +58,7 @@ var Root = React.createClass({
                 rootHtml = (
                     <PartyCreate dispatch={dispatch}
                         classes={this.props.classes}
+                        partyCreate={this.props.partyCreate}
                         account={this.props.account}/>
                 );
                 break;

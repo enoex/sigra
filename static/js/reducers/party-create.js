@@ -1,6 +1,6 @@
 /**
- * Reducer function for classes / class info
- * @module reducers/classes
+ * Reducer function for create party process
+ * @module reducers/party-create
  *
  */
 import logger from '../logger.js';
@@ -15,32 +15,10 @@ import * as ACTIONS from '../actions.js';
  *
  */
 // TODO: get from server / local data file
-const defaultState = [
-    {
-        name: 'Warrior',
-        icon: 'warrior',
-        description: 'Just a test',
-        timer: 8
-    },
-    {
-        name: 'Ranger',
-        icon: 'ranger',
-        description: 'Fast firing archer',
-        timer: 3
-    },
-    {
-        name: 'Wizard',
-        icon: 'wizard',
-        description: 'Poweful arcane based spell caster',
-        timer: 10
-    },
-    {
-        name: 'Cleric',
-        icon: 'cleric',
-        description: 'Restores health',
-        timer: 8
-    }
-];
+const defaultState = {
+    maxMembers: 5,
+    members: []
+};
 
 export default function classes ( state=defaultState, action ){
     switch(action.type){

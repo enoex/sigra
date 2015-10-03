@@ -15,9 +15,32 @@ import * as ACTIONS from '../actions.js';
  *
  */
 // TODO: get from server / local data file
-const defaultState = {
-    party: []
-};
+const defaultState = [
+    {
+        name: 'Warrior',
+        icon: 'warrior',
+        description: 'Increases your defense',
+        timer: 8
+    },
+    {
+        name: 'Ranger',
+        icon: 'ranger',
+        description: 'Fast firing archer',
+        timer: 3
+    },
+    {
+        name: 'Wizard',
+        icon: 'wizard',
+        description: 'Poweful arcane based spell caster',
+        timer: 10
+    },
+    {
+        name: 'Cleric',
+        icon: 'cleric',
+        description: 'Restores health',
+        timer: 8
+    }
+];
 
 export default function classes ( state=defaultState, action ){
     switch(action.type){

@@ -31,15 +31,15 @@ var PartyCreate = React.createClass({
     render: function render(){
         logger.log('components/party-create:render', 'called %j', this.props);
         const dispatch = this.props.dispatch;
-        const parties = this.props.account.parties;
+        const members = this.props.partyCreate.members;
 
         let partyListHtml = (
-            <ul className='party-create__current-party-list'>
-                {_.range(this.props.account.maxNumParties).map((i)=>{
+            <ul className='party-create__member-list-wrapper'>
+                {_.range(this.props.partyCreate.maxMembers).map((i)=>{
                     return (
                         <li key={i}
-                            className={'party-create__current-party-list-item ' + (parties[i] ? '' : 'party-create__current-party-list-item-empty')}>
-                            { parties[i] ? parties[i] : 'Create Party' }
+                            className={'party-create__member-list-item ' + (members[i] ? '' : 'party-create__member-list-item--empty')}>
+                            { members[i] ? members[i] : 'Empty' }
                         </li>
                     );
                 })}
@@ -82,24 +82,7 @@ var PartyCreate = React.createClass({
                             </div>
                         </div>
 
-                        <div className='party-create__member-list-wrapper'>
-
-                            <div className='party-create__member-list-item'>
-                                Item
-                            </div>
-                            <div className='party-create__member-list-item'>
-                                Item
-                            </div>
-                            <div className='party-create__member-list-item'>
-                                Item
-                            </div>
-                            <div className='party-create__member-list-item party-create__member-list-item--empty'>
-                                Empty
-                            </div>
-                            <div className='party-create__member-list-item party-create__member-list-item--empty'>
-                                Empty
-                            </div>
-                        </div>
+                        {partyListHtml}
                     </div>
 
 
