@@ -12,6 +12,17 @@
 // Imports the based colors used in the app!
 @import "themes/styles.scss";
 
+
+// MIXINS
+@mixin textOutline($color){
+    text-shadow: 1px 1px 0 $color,
+                0px 1px 0 $color,
+                1px 0px 0 $color,
+                -1px -1px 0 $color,
+                -1px 0px 0 $color,
+                0px -1px 0 $color;
+}
+
 // ======================================
 //
 // Import 3rd pary files or frameworks/libraries
@@ -35,3 +46,24 @@
 @import "./components/main-menu.scss";
 @import "./components/root-party.scss";
 @import "./components/root-party-create.scss";
+
+
+// OVERRIDES
+.__react_component_tooltip {
+    background: $COLOR_1 !important;
+    border: 2px solid $BACKGROUND_COLOR !important;
+    color: $BACKGROUND_COLOR !important;
+    @include transition(opacity 0.2s ease-out,margin-top 0.2s ease-out,margin-left 0.2s ease-out !important);
+    &:before {
+        @include position(absolute, 2px 2px 2px 2px);
+        content: " ";
+        z-index: 100;
+        border: 2px solid $BACKGROUND_COLOR;
+    }
+}
+.__react_component_tooltip.show {
+    opacity: 1 !important;
+}
+.__react_component_tooltip.type-dark.place-top:after {
+    border-top: 8px solid $COLOR_1 !important;
+}

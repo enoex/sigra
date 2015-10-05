@@ -6,6 +6,7 @@
  *
  */
 import logger from './logger.js';
+import generateName from './util/generate-name.js';
 
 /**
  *
@@ -30,7 +31,7 @@ export function mainMenuShowHome ( ){ return { type: MAIN_MENU_SHOW_HOME }; }
 /**
  * only show play menu if the player has a party selected
  */
-export function mainMenuShowPlay() {
+export function mainMenuShowPlay () {
     return (dispatch, getState) => {
         if(getState().account.selectedParty){
             return dispatch(mainMenuShowPlay());
@@ -48,6 +49,25 @@ export function mainMenuShowLeaderboard ( ){ return { type: MAIN_MENU_SHOW_LEADE
 /**
  * Account
  */
+
+
+/**
+ * Party Creation
+ */
+export const PARTY_CREATE_ADD_MEMBER = 'PARTY_CREATE_ADD_MEMBER';
+export function partyCreateAddMemberFromClassObject ( classObject ){
+    return {
+        type: PARTY_CREATE_ADD_MEMBER,
+        classObject: classObject,
+        // generate a name
+        name: generateName()
+    };
+}
+
+export const PARTY_CREATE_REMOVE_MEMBER = 'PARTY_CREATE_REMOVE_MEMBER';
+export function partyCreateRemoveMemberAtIndex ( index ){
+    return { type: PARTY_CREATE_REMOVE_MEMBER, index: index };
+}
 
 
 /**

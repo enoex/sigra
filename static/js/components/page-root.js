@@ -15,6 +15,8 @@ import MainMenu from './root-main-menu.js';
 import Party from './root-party.js';
 import PartyCreate from './root-party-create.js';
 
+var ReactTooltip = require("react-tooltip");
+
 /**
  *
  * Functionality
@@ -70,6 +72,7 @@ var Root = React.createClass({
         return (
             <div className='root__wrapper'>
                 {rootHtml}
+                <ReactTooltip />
             </div>
         );
     }

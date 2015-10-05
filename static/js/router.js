@@ -21,6 +21,7 @@ import NotFound from './components/not-found.js';
  */
 var routes = (
     <Route handler={App} >
+        <Route name="nw" path="/index.html" handler={PageRoot} />
         <Route name="main" path="/" handler={PageRoot} />
         <NotFoundRoute handler={NotFound}/>
     </Route>

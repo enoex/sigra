@@ -53399,6 +53399,7 @@
 	var routes = _react2['default'].createElement(
 	    _reactRouter.Route,
 	    { handler: _componentsAppJs2['default'] },
+	    _react2['default'].createElement(_reactRouter.Route, { name: 'nw', path: '/index.html', handler: _componentsPageRootJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.Route, { name: 'main', path: '/', handler: _componentsPageRootJs2['default'] }),
 	    _react2['default'].createElement(_reactRouter.NotFoundRoute, { handler: _componentsNotFoundJs2['default'] })
 	);
@@ -78293,6 +78294,8 @@
 
 	var _rootPartyCreateJs2 = _interopRequireDefault(_rootPartyCreateJs);
 
+	var ReactTooltip = __webpack_require__(404);
+
 	/**
 	 *
 	 * Functionality
@@ -78346,7 +78349,8 @@
 	        return _react2['default'].createElement(
 	            'div',
 	            { className: 'root__wrapper' },
-	            rootHtml
+	            rootHtml,
+	            _react2['default'].createElement(ReactTooltip, null)
 	        );
 	    }
 	});
@@ -78378,7 +78382,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	  value: true
+	    value: true
 	});
 	exports.mainMenuShowHome = mainMenuShowHome;
 	exports.mainMenuShowPlay = mainMenuShowPlay;
@@ -78386,12 +78390,18 @@
 	exports.mainMenuShowPartyCreate = mainMenuShowPartyCreate;
 	exports.mainMenuShowAccount = mainMenuShowAccount;
 	exports.mainMenuShowLeaderboard = mainMenuShowLeaderboard;
+	exports.partyCreateAddMemberFromClassObject = partyCreateAddMemberFromClassObject;
+	exports.partyCreateRemoveMemberAtIndex = partyCreateRemoveMemberAtIndex;
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	var _loggerJs = __webpack_require__(3);
 
 	var _loggerJs2 = _interopRequireDefault(_loggerJs);
+
+	var _utilGenerateNameJs = __webpack_require__(409);
+
+	var _utilGenerateNameJs2 = _interopRequireDefault(_utilGenerateNameJs);
 
 	/**
 	 *
@@ -78420,7 +78430,7 @@
 	exports.MAIN_MENU_SHOW_LEADERBOARD = MAIN_MENU_SHOW_LEADERBOARD;
 
 	function mainMenuShowHome() {
-	  return { type: MAIN_MENU_SHOW_HOME };
+	    return { type: MAIN_MENU_SHOW_HOME };
 	}
 
 	/**
@@ -78428,34 +78438,56 @@
 	 */
 
 	function mainMenuShowPlay() {
-	  return function (dispatch, getState) {
-	    if (getState().account.selectedParty) {
-	      return dispatch(mainMenuShowPlay());
-	    } else {
-	      return dispatch(mainMenuShowParty());
-	    }
-	  };
+	    return function (dispatch, getState) {
+	        if (getState().account.selectedParty) {
+	            return dispatch(mainMenuShowPlay());
+	        } else {
+	            return dispatch(mainMenuShowParty());
+	        }
+	    };
 	}
 
 	function mainMenuShowParty() {
-	  return { type: MAIN_MENU_SHOW_PARTY };
+	    return { type: MAIN_MENU_SHOW_PARTY };
 	}
 
 	function mainMenuShowPartyCreate() {
-	  return { type: MAIN_MENU_SHOW_PARTY_CREATE };
+	    return { type: MAIN_MENU_SHOW_PARTY_CREATE };
 	}
 
 	function mainMenuShowAccount() {
-	  return { type: MAIN_MENU_SHOW_ACCOUNT };
+	    return { type: MAIN_MENU_SHOW_ACCOUNT };
 	}
 
 	function mainMenuShowLeaderboard() {
-	  return { type: MAIN_MENU_SHOW_LEADERBOARD };
+	    return { type: MAIN_MENU_SHOW_LEADERBOARD };
 	}
 
 	/**
 	 * Account
 	 */
+
+	/**
+	 * Party Creation
+	 */
+	var PARTY_CREATE_ADD_MEMBER = 'PARTY_CREATE_ADD_MEMBER';
+	exports.PARTY_CREATE_ADD_MEMBER = PARTY_CREATE_ADD_MEMBER;
+
+	function partyCreateAddMemberFromClassObject(classObject) {
+	    return {
+	        type: PARTY_CREATE_ADD_MEMBER,
+	        classObject: classObject,
+	        // generate a name
+	        name: (0, _utilGenerateNameJs2['default'])()
+	    };
+	}
+
+	var PARTY_CREATE_REMOVE_MEMBER = 'PARTY_CREATE_REMOVE_MEMBER';
+	exports.PARTY_CREATE_REMOVE_MEMBER = PARTY_CREATE_REMOVE_MEMBER;
+
+	function partyCreateRemoveMemberAtIndex(index) {
+	    return { type: PARTY_CREATE_REMOVE_MEMBER, index: index };
+	}
 
 	/**
 	 *
@@ -78743,17 +78775,21 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(176);
-
 	var _bragiBrowser = __webpack_require__(4);
 
 	var _bragiBrowser2 = _interopRequireDefault(_bragiBrowser);
 
 	var _reactRedux = __webpack_require__(216);
 
+	var _reactRouter = __webpack_require__(176);
+
 	var _actionsJs = __webpack_require__(389);
 
 	var ACTIONS = _interopRequireWildcard(_actionsJs);
+
+	var _utilAnnotateDescriptionStringJs = __webpack_require__(408);
+
+	var _utilAnnotateDescriptionStringJs2 = _interopRequireDefault(_utilAnnotateDescriptionStringJs);
 
 	/**
 	 *
@@ -78766,43 +78802,137 @@
 	    componentWillMount: function componentWillMount() {
 	        _bragiBrowser2['default'].log('components/party-create:componentWillMount', 'called');
 	    },
+	    shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+	        if (nextProps === this.props) {
+	            _bragiBrowser2['default'].log('components/party-create:shouldComponentUpdate', 'false');
+	            return false;
+	        } else {
+	            _bragiBrowser2['default'].log('components/party-create:shouldComponentUpdate', 'true');
+	            return true;
+	        }
+	    },
 
+	    /**
+	     * UI
+	     */
 	    backClicked: function backClicked() {
 	        this.props.dispatch(ACTIONS.mainMenuShowParty());
 	    },
+	    classItemClicked: function classItemClicked(d) {
+	        _bragiBrowser2['default'].log('components/party-create:classItemClicked', 'called, %j', d);
+	        this.props.dispatch(ACTIONS.partyCreateAddMemberFromClassObject(d));
+	    },
+	    removePartyMemberAtIndex: function removePartyMemberAtIndex(i) {
+	        _bragiBrowser2['default'].log('components/party-create:removePartyMemberAtIndex', 'called: ' + i);
+	        this.props.dispatch(ACTIONS.partyCreateRemoveMemberAtIndex(i));
+	    },
 
+	    /**
+	     * Render
+	     */
 	    render: function render() {
+	        var _this = this;
+
 	        _bragiBrowser2['default'].log('components/party-create:render', 'called %j', this.props);
 	        var dispatch = this.props.dispatch;
 	        var members = this.props.partyCreate.members;
 
+	        // PART List
 	        var partyListHtml = _react2['default'].createElement(
-	            'ul',
+	            'div',
 	            { className: 'party-create__member-list-wrapper' },
 	            _lodash2['default'].range(this.props.partyCreate.maxMembers).map(function (i) {
 	                return _react2['default'].createElement(
-	                    'li',
+	                    'div',
 	                    { key: i,
+	                        'data-tip': members[i] ? 'Click to remove ' + members[i].name : 'Select a class to add a party member',
 	                        className: 'party-create__member-list-item ' + (members[i] ? '' : 'party-create__member-list-item--empty') },
-	                    members[i] ? members[i] : 'Empty'
+	                    members[i] ? _react2['default'].createElement(
+	                        'div',
+	                        { className: 'party-create__member-list-item-inner',
+	                            onClick: function () {
+	                                _this.removePartyMemberAtIndex(i);
+	                            } },
+	                        _react2['default'].createElement('img', { className: 'party-create__member-list-item-class-image', src: '/static/img/classes/warrior.png' }),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__member-list-item-names' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'party-create__member-list-item-name' },
+	                                members[i].name
+	                            ),
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'party-create__member-list-item-className' },
+	                                members[i].className
+	                            )
+	                        ),
+	                        _react2['default'].createElement('div', { className: 'clear' })
+	                    ) : 'Empty'
 	                );
 	            })
 	        );
 
 	        // Available classes. TODO: Filter based on filter
-	        var classesListHtml = this.props.classes.map(function (d) {
+	        var classesListHtml = this.props.classes.classes.map(function (d) {
+
+	            var descriptionHtml = _react2['default'].createElement('span', { dangerouslySetInnerHTML: { __html: (0, _utilAnnotateDescriptionStringJs2['default'])(d.description) } });
+
+	            // TODO: Class TYPE ICONS for filtering. Iterate over types
 	            return _react2['default'].createElement(
 	                'div',
-	                { className: 'party-create__class-item' },
+	                { className: 'party-create__class-item', key: d.id },
 	                _react2['default'].createElement(
 	                    'div',
-	                    { className: 'party-create__class-item-name' },
-	                    d.name
+	                    { className: 'party-create__class-item-name',
+	                        onClick: function () {
+	                            return _this.classItemClicked(d);
+	                        },
+	                        'data-tip': 'Click to add a ' + d.name + ' to your party' },
+	                    _react2['default'].createElement(
+	                        'span',
+	                        { className: 'party-create__class-item-name-text' },
+	                        d.name,
+	                        _react2['default'].createElement(
+	                            'span',
+	                            { className: 'party-create__class-item-class-types' },
+	                            _react2['default'].createElement('img', { className: 'party-create__class-item-class-type-icon',
+	                                src: '/static/img/classes/type-tank.png' }),
+	                            _react2['default'].createElement('div', { className: 'clear' })
+	                        )
+	                    )
+	                ),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'party-create__class-item-class-image' },
+	                    _react2['default'].createElement('img', { src: '/static/img/classes/warrior.png' })
 	                ),
 	                _react2['default'].createElement(
 	                    'div',
 	                    { className: 'party-create__class-item-description' },
-	                    d.description
+	                    descriptionHtml
+	                ),
+	                _react2['default'].createElement('div', { className: 'clear' }),
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'party-create__class-item-timer',
+	                        'data-tip': d.timer + ' seconds required for critical hit' },
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'party-create__class-item-timer-bar-wrapper' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'party-create__class-item-timer-bar', style: { width: d.timer / _this.props.classes.maxTimer * 100 + '%' } },
+	                            ' '
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'party-create__class-item-timer-label' },
+	                        d.timer,
+	                        ' seconds'
+	                    )
 	                )
 	            );
 	        });
@@ -78838,7 +78968,13 @@
 	                            _react2['default'].createElement(
 	                                'h2',
 	                                null,
-	                                ' Members '
+	                                ' Members',
+	                                _react2['default'].createElement(
+	                                    'span',
+	                                    { className: 'party-create__title-members-length' },
+	                                    members.length,
+	                                    ' / 5'
+	                                )
 	                            )
 	                        )
 	                    ),
@@ -78927,7 +79063,16 @@
 	    }
 	});
 
-	exports['default'] = PartyCreate;
+	/**
+	 * configure select function and connect to redux
+	 */
+	function select(state) {
+	    _bragiBrowser2['default'].log('components/root-party-create:select', 'called: ', state);
+	    return { partyCreate: state.partyCreate };
+	}
+	exports['default'] = (0, _reactRedux.connect)(select)(PartyCreate);
+
+	//export default PartyCreate;
 	module.exports = exports['default'];
 
 /***/ },
@@ -85457,27 +85602,30 @@
 	 *
 	 */
 	// TODO: get from server / local data file
-	var defaultState = [{
-	    name: 'Warrior',
-	    icon: 'warrior',
-	    description: 'Increases your defense',
-	    timer: 8
-	}, {
-	    name: 'Ranger',
-	    icon: 'ranger',
-	    description: 'Fast firing archer',
-	    timer: 3
-	}, {
-	    name: 'Wizard',
-	    icon: 'wizard',
-	    description: 'Poweful arcane based spell caster',
-	    timer: 10
-	}, {
-	    name: 'Cleric',
-	    icon: 'cleric',
-	    description: 'Restores health',
-	    timer: 8
-	}];
+	var defaultState = {
+	    maxTimer: 12,
+	    classes: [{
+	        name: 'Warrior',
+	        id: 'warrior',
+	        description: 'Increases defense by ([10][[x2]]) and absorbs the next ([20][[x2]]) damage for ([2][[x3]]) seconds.',
+	        timer: 8
+	    }, {
+	        name: 'Ranger',
+	        id: 'ranger',
+	        description: 'Fast firing archer, deals ([5][[x2]]) damage',
+	        timer: 3
+	    }, {
+	        name: 'Wizard',
+	        id: 'wizard',
+	        description: 'Fires a magic missle, dealing ([30][[x2.5]]) damage immediately',
+	        timer: 10
+	    }, {
+	        name: 'Cleric',
+	        id: 'cleric',
+	        description: 'Restores ([20][[x3]]) health immediately',
+	        timer: 12
+	    }]
+	};
 
 	function classes(state, action) {
 	    if (state === undefined) state = defaultState;
@@ -85619,13 +85767,560 @@
 	function classes(state, action) {
 	    if (state === undefined) state = defaultState;
 
+	    _loggerJs2['default'].log('actions/party-create', 'called : %j', action);
+	    var newState;
+
 	    switch (action.type) {
+	        case ACTIONS.PARTY_CREATE_ADD_MEMBER:
+	            if (state.members.length < state.maxMembers) {
+	                var newMember = {
+	                    name: action.name,
+	                    classId: action.classObject.id,
+	                    className: action.classObject.name
+	                };
+
+	                newState = _lodash2['default'].cloneDeep(state);
+	                newState.members.push(newMember);
+	                return newState;
+	            } else {
+	                return state;
+	            }
+	            break;
+
+	        case ACTIONS.PARTY_CREATE_REMOVE_MEMBER:
+	            if (state.members[action.index]) {
+	                newState = _lodash2['default'].cloneDeep(state);
+	                newState.members.splice(action.index, 1);
+	                return newState;
+	            } else {
+	                _loggerJs2['default'].log('actions/party-create', 'invalid index %j', action);
+	            }
+	            break;
+
 	        default:
 	            return state;
 	    }
 	}
 
 	module.exports = exports['default'];
+
+/***/ },
+/* 404 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(20);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _classnames = __webpack_require__(405);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _style = __webpack_require__(406);
+
+	var _style2 = _interopRequireDefault(_style);
+
+	var ReactTooltip = (function (_Component) {
+	  _inherits(ReactTooltip, _Component);
+
+	  ReactTooltip.prototype._bind = function _bind() {
+	    var _this = this;
+
+	    for (var _len = arguments.length, handlers = Array(_len), _key = 0; _key < _len; _key++) {
+	      handlers[_key] = arguments[_key];
+	    }
+
+	    handlers.forEach(function (handler) {
+	      return _this[handler] = _this[handler].bind(_this);
+	    });
+	  };
+
+	  ReactTooltip.hide = function hide() {
+	    window.dispatchEvent(new window.Event('__react_tooltip_hide_event'));
+	  };
+
+	  ReactTooltip.rebuild = function rebuild() {
+	    window.dispatchEvent(new window.Event('__react_tooltip_rebuild_event'));
+	  };
+
+	  _createClass(ReactTooltip, null, [{
+	    key: 'displayName',
+	    value: 'ReactTooltip',
+	    enumerable: true
+	  }, {
+	    key: 'eventHideMark',
+	    value: 'hide' + Date.now(),
+	    enumerable: true
+	  }, {
+	    key: 'eventRebuildMark',
+	    value: 'rebuild' + Date.now(),
+	    enumerable: true
+	  }]);
+
+	  function ReactTooltip(props) {
+	    _classCallCheck(this, ReactTooltip);
+
+	    _Component.call(this, props);
+	    this._bind('showTooltip', 'updateTooltip', 'hideTooltip');
+	    this.mount = true;
+	    this.state = {
+	      show: false,
+	      multilineCount: 0,
+	      placeholder: '',
+	      x: 'NONE',
+	      y: 'NONE',
+	      place: '',
+	      type: '',
+	      effect: '',
+	      multiline: false,
+	      position: {}
+	    };
+	  }
+
+	  ReactTooltip.prototype.componentDidMount = function componentDidMount() {
+	    this.bindListener();
+	    /* Add window event listener for hide and rebuild */
+	    window.addEventListener('__react_tooltip_hide_event', this.globalHide.bind(this), false);
+	    window.addEventListener('__react_tooltip_rebuild_event', this.globalRebuild.bind(this), false);
+	  };
+
+	  /** Method for window.addEventListener
+	   *
+	   **/
+
+	  ReactTooltip.prototype.globalHide = function globalHide() {
+	    if (this.mount) {
+	      this.hideTooltip();
+	    }
+	  };
+
+	  ReactTooltip.prototype.globalRebuild = function globalRebuild() {
+	    if (this.mount) {
+	      this.unbindListener();
+	      this.bindListener();
+	    }
+	  };
+
+	  ReactTooltip.prototype.componentWillUnmount = function componentWillUnmount() {
+	    this.unbindListener();
+	    this.mount = false;
+	    var tag = document.querySelector('style[id="react-tooltip"]');
+	    document.getElementsByTagName('head')[0].removeChild(tag);
+	    window.removeEventListener('__react_tooltip_hide_event', this.globalHide);
+	    window.removeEventListener('__react_tooltip_rebuild_event', this.globalRebuild);
+	  };
+
+	  ReactTooltip.prototype.componentWillUpdate = function componentWillUpdate() {
+	    this.unbindListener();
+	  };
+
+	  ReactTooltip.prototype.componentDidUpdate = function componentDidUpdate() {
+	    this._updatePosition();
+	    this.bindListener();
+	  };
+
+	  ReactTooltip.prototype.bindListener = function bindListener() {
+	    var targetArray = document.querySelectorAll('[data-tip]');
+	    for (var i = 0; i < targetArray.length; i++) {
+	      targetArray[i].addEventListener('mouseenter', this.showTooltip, false);
+	      targetArray[i].addEventListener('mousemove', this.updateTooltip, false);
+	      targetArray[i].addEventListener('mouseleave', this.hideTooltip, false);
+	    }
+	  };
+
+	  ReactTooltip.prototype.unbindListener = function unbindListener() {
+	    var targetArray = document.querySelectorAll('[data-tip]');
+	    for (var i = 0; i < targetArray.length; i++) {
+	      targetArray[i].removeEventListener('mouseenter', this.showTooltip);
+	      targetArray[i].removeEventListener('mousemove', this.updateTooltip);
+	      targetArray[i].removeEventListener('mouseleave', this.hideTooltip);
+	    }
+	  };
+
+	  ReactTooltip.prototype._updatePosition = function _updatePosition() {
+	    var node = _react.findDOMNode(this);
+
+	    var tipWidth = node.clientWidth;
+	    var tipHeight = node.clientHeight;
+	    var offset = { x: 0, y: 0 };
+	    var effect = this.state.effect;
+
+	    if (effect === 'float') {
+	      if (this.state.place === 'top') {
+	        offset.x = -(tipWidth / 2);
+	        offset.y = -50;
+	      } else if (this.state.place === 'bottom') {
+	        offset.x = -(tipWidth / 2);
+	        offset.y = 30;
+	      } else if (this.state.place === 'left') {
+	        offset.x = -(tipWidth + 15);
+	        offset.y = -(tipHeight / 2);
+	      } else if (this.state.place === 'right') {
+	        offset.x = 10;
+	        offset.y = -(tipHeight / 2);
+	      }
+	    }
+	    var xPosition = 0;
+	    var yPosition = 0;
+	    var position = this.state.position;
+
+	    if (Object.prototype.toString.apply(position) === '[object String]') {
+	      position = JSON.parse(position.toString().replace(/\'/g, '\"'));
+	    }
+	    for (var key in position) {
+	      if (key === 'top') {
+	        yPosition -= parseInt(position[key], 10);
+	      } else if (key === 'bottom') {
+	        yPosition += parseInt(position[key], 10);
+	      } else if (key === 'left') {
+	        xPosition -= parseInt(position[key], 10);
+	      } else if (key === 'right') {
+	        xPosition += parseInt(position[key], 10);
+	      }
+	    }
+
+	    node.style.left = this.state.x + offset.x + xPosition + 'px';
+	    node.style.top = this.state.y + offset.y + yPosition + 'px';
+	  };
+
+	  ReactTooltip.prototype.showTooltip = function showTooltip(e) {
+	    var originTooltip = e.target.getAttribute('data-tip');
+	    // Detect multiline
+	    var regexp = /<br\s*\/?>/;
+	    var multiline = e.target.getAttribute('data-multiline') ? e.target.getAttribute('data-multiline') : this.props.multiline ? this.props.multiline : false;
+	    var tooltipText = undefined;
+	    var multilineCount = 0;
+	    if (!multiline || multiline === 'false' || !regexp.test(originTooltip)) {
+	      tooltipText = originTooltip;
+	    } else {
+	      tooltipText = originTooltip.split(regexp).map(function (d, i) {
+	        multilineCount += 1;
+	        return _react2['default'].createElement(
+	          'span',
+	          { key: i, className: 'multi-line' },
+	          d
+	        );
+	      });
+	    }
+	    this.setState({
+	      placeholder: tooltipText,
+	      multilineCount: multilineCount,
+	      place: e.target.getAttribute('data-place') ? e.target.getAttribute('data-place') : this.props.place ? this.props.place : 'top',
+	      type: e.target.getAttribute('data-type') ? e.target.getAttribute('data-type') : this.props.type ? this.props.type : 'dark',
+	      effect: e.target.getAttribute('data-effect') ? e.target.getAttribute('data-effect') : this.props.effect ? this.props.effect : 'float',
+	      position: e.target.getAttribute('data-position') ? e.target.getAttribute('data-position') : this.props.position ? this.props.position : {},
+	      multiline: multiline
+	    });
+	    this.updateTooltip(e);
+	  };
+
+	  ReactTooltip.prototype.updateTooltip = function updateTooltip(e) {
+	    if (this.trim(this.state.placeholder).length > 0) {
+	      var _state = this.state;
+	      var multilineCount = _state.multilineCount;
+	      var place = _state.place;
+
+	      if (this.state.effect === 'float') {
+	        var offsetY = !multilineCount ? e.clientY : place !== 'top' ? e.clientY : e.clientY - multilineCount * 14.5;
+	        this.setState({
+	          show: true,
+	          x: e.clientX,
+	          y: offsetY
+	        });
+	      } else if (this.state.effect === 'solid') {
+	        var boundingClientRect = e.target.getBoundingClientRect();
+	        var targetTop = boundingClientRect.top;
+	        var targetLeft = boundingClientRect.left;
+	        var node = _react2['default'].findDOMNode(this);
+	        var tipWidth = node.clientWidth;
+	        var tipHeight = node.clientHeight;
+	        var targetWidth = e.target.clientWidth;
+	        var targetHeight = e.target.clientHeight;
+	        var x = undefined;
+	        var y = undefined;
+	        if (place === 'top') {
+	          x = targetLeft - tipWidth / 2 + targetWidth / 2;
+	          y = targetTop - tipHeight - 8;
+	        } else if (place === 'bottom') {
+	          x = targetLeft - tipWidth / 2 + targetWidth / 2;
+	          y = targetTop + targetHeight + 8;
+	        } else if (place === 'left') {
+	          x = targetLeft - tipWidth - 6;
+	          y = targetTop + targetHeight / 2 - tipHeight / 2;
+	        } else if (place === 'right') {
+	          x = targetLeft + targetWidth + 6;
+	          y = targetTop + targetHeight / 2 - tipHeight / 2;
+	        }
+	        this.setState({
+	          show: true,
+	          x: this.state.x === 'NONE' ? x : this.state.x,
+	          y: this.state.y === 'NONE' ? y : this.state.y
+	        });
+	      }
+	    }
+	  };
+
+	  ReactTooltip.prototype.hideTooltip = function hideTooltip() {
+	    this.setState({
+	      show: false,
+	      x: 'NONE',
+	      y: 'NONE'
+	    });
+	  };
+
+	  ReactTooltip.prototype.render = function render() {
+	    var tooltipClass = _classnames2['default']('__react_component_tooltip', { 'show': this.state.show }, { 'place-top': this.state.place === 'top' }, { 'place-bottom': this.state.place === 'bottom' }, { 'place-left': this.state.place === 'left' }, { 'place-right': this.state.place === 'right' }, { 'type-dark': this.state.type === 'dark' }, { 'type-success': this.state.type === 'success' }, { 'type-warning': this.state.type === 'warning' }, { 'type-error': this.state.type === 'error' }, { 'type-info': this.state.type === 'info' }, { 'type-light': this.state.type === 'light' });
+
+	    if (!document.getElementsByTagName('head')[0].querySelector('style[id="react-tooltip"]')) {
+	      var tag = document.createElement('style');
+	      tag.id = 'react-tooltip';
+	      tag.innerHTML = _style2['default'];
+	      document.getElementsByTagName('head')[0].appendChild(tag);
+	    }
+
+	    return _react2['default'].createElement(
+	      'span',
+	      { className: tooltipClass, 'data-id': 'tooltip' },
+	      this.state.placeholder
+	    );
+	  };
+
+	  ReactTooltip.prototype.trim = function trim(string) {
+	    if (Object.prototype.toString.call(string) !== '[object String]') {
+	      return string;
+	    }
+	    var newString = string.split('');
+	    var firstCount = 0;
+	    var lastCount = 0;
+	    for (var i = 0; i < string.length; i++) {
+	      if (string[i] !== ' ') {
+	        break;
+	      }
+	      firstCount++;
+	    }
+	    for (var i = string.length - 1; i >= 0; i--) {
+	      if (string[i] !== ' ') {
+	        break;
+	      }
+	      lastCount++;
+	    }
+	    newString.splice(0, firstCount);
+	    newString.splice(-lastCount, lastCount);
+	    return newString.join('');
+	  };
+
+	  return ReactTooltip;
+	})(_react.Component);
+
+	exports['default'] = ReactTooltip;
+
+	ReactTooltip.propTypes = {
+	  place: _react.PropTypes.string,
+	  type: _react.PropTypes.string,
+	  effect: _react.PropTypes.string,
+	  position: _react.PropTypes.object,
+	  multiline: _react.PropTypes.bool
+	};
+	module.exports = exports['default'];
+
+
+/***/ },
+/* 405 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2015 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+
+	function classNames() {
+		var classes = '';
+		var arg;
+
+		for (var i = 0; i < arguments.length; i++) {
+			arg = arguments[i];
+			if (!arg) {
+				continue;
+			}
+
+			if ('string' === typeof arg || 'number' === typeof arg) {
+				classes += ' ' + arg;
+			} else if (Object.prototype.toString.call(arg) === '[object Array]') {
+				classes += ' ' + classNames.apply(null, arg);
+			} else if ('object' === typeof arg) {
+				for (var key in arg) {
+					if (!arg.hasOwnProperty(key) || !arg[key]) {
+						continue;
+					}
+					classes += ' ' + key;
+				}
+			}
+		}
+		return classes.substr(1);
+	}
+
+	// safely export classNames for node / browserify
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	}
+
+	// safely export classNames for RequireJS
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+			return classNames;
+		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+
+
+/***/ },
+/* 406 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports['default'] = '.__react_component_tooltip{border-radius:3px;display:inline-block;font-size:13px;left:-999em;opacity:0;padding:8px 21px;position:fixed;pointer-events:none;transition:opacity 0.3s ease-out,margin-top 0.3s ease-out,margin-left 0.3s ease-out;top:-999em;visibility:hidden;z-index:999}.__react_component_tooltip:after{content:"";width:0;height:0;position:absolute}.__react_component_tooltip.show{opacity:0.9;margin-top:0px;margin-left:0px;visibility:visible}.__react_component_tooltip.type-dark{color:#fff;background-color:#222}.__react_component_tooltip.type-dark.place-top:after{border-top:8px solid #222}.__react_component_tooltip.type-dark.place-bottom:after{border-bottom:8px solid #222}.__react_component_tooltip.type-dark.place-left:after{border-left:6px solid #222}.__react_component_tooltip.type-dark.place-right:after{border-right:6px solid #222}.__react_component_tooltip.type-success{color:#fff;background-color:#8DC572}.__react_component_tooltip.type-success.place-top:after{border-top:8px solid #8DC572}.__react_component_tooltip.type-success.place-bottom:after{border-bottom:8px solid #8DC572}.__react_component_tooltip.type-success.place-left:after{border-left:6px solid #8DC572}.__react_component_tooltip.type-success.place-right:after{border-right:6px solid #8DC572}.__react_component_tooltip.type-warning{color:#fff;background-color:#F0AD4E}.__react_component_tooltip.type-warning.place-top:after{border-top:8px solid #F0AD4E}.__react_component_tooltip.type-warning.place-bottom:after{border-bottom:8px solid #F0AD4E}.__react_component_tooltip.type-warning.place-left:after{border-left:6px solid #F0AD4E}.__react_component_tooltip.type-warning.place-right:after{border-right:6px solid #F0AD4E}.__react_component_tooltip.type-error{color:#fff;background-color:#BE6464}.__react_component_tooltip.type-error.place-top:after{border-top:8px solid #BE6464}.__react_component_tooltip.type-error.place-bottom:after{border-bottom:8px solid #BE6464}.__react_component_tooltip.type-error.place-left:after{border-left:6px solid #BE6464}.__react_component_tooltip.type-error.place-right:after{border-right:6px solid #BE6464}.__react_component_tooltip.type-info{color:#fff;background-color:#337AB7}.__react_component_tooltip.type-info.place-top:after{border-top:8px solid #337AB7}.__react_component_tooltip.type-info.place-bottom:after{border-bottom:8px solid #337AB7}.__react_component_tooltip.type-info.place-left:after{border-left:6px solid #337AB7}.__react_component_tooltip.type-info.place-right:after{border-right:6px solid #337AB7}.__react_component_tooltip.type-light{color:#222;background-color:#fff}.__react_component_tooltip.type-light.place-top:after{border-top:8px solid #fff}.__react_component_tooltip.type-light.place-bottom:after{border-bottom:8px solid #fff}.__react_component_tooltip.type-light.place-left:after{border-left:6px solid #fff}.__react_component_tooltip.type-light.place-right:after{border-right:6px solid #fff}.__react_component_tooltip.place-top{margin-top:-10px}.__react_component_tooltip.place-top:after{border-left:10px solid transparent;border-right:10px solid transparent;bottom:-8px;left:50%;margin-left:-10px}.__react_component_tooltip.place-bottom{margin-top:10px}.__react_component_tooltip.place-bottom:after{border-left:10px solid transparent;border-right:10px solid transparent;top:-8px;left:50%;margin-left:-10px}.__react_component_tooltip.place-left{margin-left:-10px}.__react_component_tooltip.place-left:after{border-top:6px solid transparent;border-bottom:6px solid transparent;right:-6px;top:50%;margin-top:-5px}.__react_component_tooltip.place-right{margin-left:10px}.__react_component_tooltip.place-right:after{border-top:6px solid transparent;border-bottom:6px solid transparent;left:-6px;top:50%;margin-top:-5px}.__react_component_tooltip .multi-line{display:block;padding:2px 0px;text-align:center}';
+	module.exports = exports['default'];
+
+
+/***/ },
+/* 407 */,
+/* 408 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	var _ = __webpack_require__(17);
+	var DESCRIPTION_TEXT_REGEX = /\(\[([0-9%.]+)\](\[\[([a-zA-Z0-9%.*]+)\]\]\)?)/;
+	var DESCRIPTION_TEXT_REGEX_GLOBAL = /\(\[([0-9%.]+)\](\[\[([a-zA-Z0-9%.*]+)\]\]\))?/g;
+
+	function annotateDescription(input) {
+	    var matched = input.match(DESCRIPTION_TEXT_REGEX_GLOBAL);
+	    var finalString = input;
+
+	    if (matched) {
+	        _.each(matched, function (d) {
+	            var curMatch = d.match(DESCRIPTION_TEXT_REGEX);
+	            if (!curMatch) {
+	                return;
+	            }
+
+	            var annotedItem = '<span class="description__tip-item">' + '<span class="description__tip-base" data-tip="Base value of ' + curMatch[1] + '">' + curMatch[1] + '</span>' + '' + (curMatch[3] ? '<span class="description__tip-critical" data-tip="Criticals are ' + curMatch[3].replace('x', '') + ' times more effective (total: ' + +curMatch[1].replace(/[^0-9]/, '') * +curMatch[3].replace(/[^0-9]/, '') + ')">(' + curMatch[3] + ')</span>' : '') + '</span>';
+
+	            finalString = finalString.replace(curMatch[0], annotedItem);
+	        });
+	    }
+
+	    return finalString;
+	}
+
+	exports['default'] = annotateDescription;
+	module.exports = exports['default'];
+
+/***/ },
+/* 409 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	function generateName() {
+	    var vowels = "aeiouyaeiouaeioea";
+	    var cons = "bcdfghjklmnpqrstvwxzybcdgklmnprstvwbcdgkpstrkdtr";
+	    var rndname = []; // final name
+	    var paircons = "ngrkndstshthphsktrdrbrgrfrclcrst";
+	    var randomNum = Math.random() * 75 | 0;
+	    var orig = randomNum;
+	    var n = 1;
+
+	    var dlc = false;
+	    var vwl = false;
+	    var dbl = false;
+
+	    if (randomNum > 63) {
+	        // randomNum is 0 - 75 where 64-75 is cons pair
+	        // 17-63 is cons, 0-16 is vowel
+	        randomNum = (randomNum - 61) * 2; // name can't start with "ng" "nd" or "rk"
+	        rndname[0] = paircons[randomNum];
+	        rndname[1] = paircons[randomNum + 1];
+	        n = 2;
+	    } else if (randomNum > 16) {
+	        randomNum -= 17;
+	        rndname[0] = cons[randomNum];
+	    } else {
+	        rndname[0] = vowels[randomNum];
+	        vwl = true;
+	    }
+
+	    var namlen = 5 + (Math.random() * 5 | 0);
+
+	    for (var i = n; i < namlen; i++) {
+	        dlc = false;
+	        if (vwl) {
+	            //last char was a vowel
+	            // so pick a cons or cons pair
+	            randomNum = Math.random() * 62 | 0;
+	            if (randomNum > 46) {
+	                // pick a cons pair
+	                if (i > namlen - 3) {
+	                    // last 2 chars in name?
+	                    // name can only end in cons pair "rk" "st" "sh" "th" "ph" "sk" "nd" or "ng"
+	                    randomNum = (Math.random() * 7 | 0) * 2;
+	                } else {
+	                    // pick any from the set
+	                    randomNum = (randomNum - 47) * 2;
+	                }
+	                rndname[i] = paircons[randomNum];
+	                rndname[i + 1] = paircons[randomNum + 1];
+	                dlc = true; // flag keeps second letter from being doubled below
+	                i += 1;
+	            } else {
+	                // select a single cons
+	                rndname[i] = cons[randomNum];
+	            }
+	        } else {
+	            // select a vowel
+	            rndname[i] = vowels[Math.random() * 16 | 0];
+	        }
+	        vwl = !vwl;
+	        if (!dbl && !dlc) {
+	            // one chance at double letters in name
+	            if (!(Math.random() * (i + 9) | 0)) {
+	                // chances decrease towards end of name
+	                rndname[i + 1] = rndname[i];
+	                dbl = true;
+	                i += 1;
+	            }
+	        }
+	    }
+	    // capitalize name
+	    rndname[0] = rndname[0].toUpperCase();
+	    rndname = rndname.join('');
+
+	    // return it
+	    return rndname;
+	}
+
+	exports["default"] = generateName;
+	module.exports = exports["default"];
 
 /***/ }
 /******/ ]);

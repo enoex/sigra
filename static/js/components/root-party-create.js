@@ -7,12 +7,13 @@
 // External Dependencies
 import _ from 'lodash';
 import React from 'react';
-import {RouteHandler} from 'react-router';
 import logger from 'bragi-browser';
-
 import {connect} from 'react-redux';
+import {RouteHandler} from 'react-router';
 
 import * as ACTIONS from '../actions.js';
+import annotateDescription from '../util/annotate-description-string.js';
+
 
 /**
  *
@@ -20,41 +21,113 @@ import * as ACTIONS from '../actions.js';
  *
  */
 var PartyCreate = React.createClass({
-    componentWillMount: function componentWillMount(){
+    componentWillMount: function componentWillMount (){
         logger.log('components/party-create:componentWillMount', 'called');
     },
-
-    backClicked: function backClicked(){
-        this.props.dispatch(ACTIONS.mainMenuShowParty());
+    shouldComponentUpdate: function ( nextProps, nextState ){
+        if(nextProps === this.props){
+            logger.log('components/party-create:shouldComponentUpdate', 'false');
+            return false;
+        } else {
+            logger.log('components/party-create:shouldComponentUpdate', 'true');
+            return true;
+        }
     },
 
+    /**
+     * UI
+     */
+    backClicked: function backClicked (){
+        this.props.dispatch(ACTIONS.mainMenuShowParty());
+    },
+    classItemClicked: function classItemClicked ( d ){
+        logger.log('components/party-create:classItemClicked', 'called, %j', d);
+        this.props.dispatch(ACTIONS.partyCreateAddMemberFromClassObject(d));
+    },
+    removePartyMemberAtIndex: function removePartyMemberAtIndex ( i ){
+        logger.log('components/party-create:removePartyMemberAtIndex', 'called: ' + i);
+        this.props.dispatch(ACTIONS.partyCreateRemoveMemberAtIndex(i));
+    },
+
+    /**
+     * Render
+     */
     render: function render(){
         logger.log('components/party-create:render', 'called %j', this.props);
         const dispatch = this.props.dispatch;
         const members = this.props.partyCreate.members;
 
+        // PART List
         let partyListHtml = (
-            <ul className='party-create__member-list-wrapper'>
+            <div className='party-create__member-list-wrapper'>
                 {_.range(this.props.partyCreate.maxMembers).map((i)=>{
                     return (
-                        <li key={i}
+                        <div key={i}
+                            data-tip={(members[i] ? 'Click to remove ' + members[i].name : 'Select a class to add a party member')}
                             className={'party-create__member-list-item ' + (members[i] ? '' : 'party-create__member-list-item--empty')}>
-                            { members[i] ? members[i] : 'Empty' }
-                        </li>
+                            { members[i] ? (
+                                <div className='party-create__member-list-item-inner'
+                                    onClick={()=>{ this.removePartyMemberAtIndex(i); }}>
+                                    <img className='party-create__member-list-item-class-image' src='/static/img/classes/warrior.png' />
+                                    <div className='party-create__member-list-item-names'>
+                                        <div className='party-create__member-list-item-name'>
+                                            {members[i].name}
+                                        </div>
+                                        <div className='party-create__member-list-item-className'>
+                                            {members[i].className}
+                                        </div>
+                                    </div>
+                                    <div className='clear'></div>
+                                </div>
+                            ) : 'Empty' }
+                        </div>
                     );
                 })}
-            </ul>
+            </div>
         );
 
         // Available classes. TODO: Filter based on filter
-        let classesListHtml = this.props.classes.map((d)=>{
+        let classesListHtml = this.props.classes.classes.map((d)=>{
+
+            let descriptionHtml = (
+                <span dangerouslySetInnerHTML={{__html: annotateDescription(d.description)}}></span>
+            );
+
+            // TODO: Class TYPE ICONS for filtering. Iterate over types
             return (
-                <div className='party-create__class-item'>
-                    <div className='party-create__class-item-name'>
-                        {d.name}
+                <div className='party-create__class-item' key={d.id}>
+                    <div className='party-create__class-item-name'
+                        onClick={()=>{return this.classItemClicked(d); }}
+                        data-tip={'Click to add a ' + d.name + ' to your party'}>
+                        <span className='party-create__class-item-name-text'>
+                            {d.name}
+
+                            <span className='party-create__class-item-class-types'>
+                                <img className='party-create__class-item-class-type-icon'
+                                    src='/static/img/classes/type-tank.png' />
+                                <div className='clear'></div>
+                            </span>
+                        </span>
+                    </div>
+
+                    <div className='party-create__class-item-class-image'>
+                        <img src='/static/img/classes/warrior.png' />
                     </div>
                     <div className='party-create__class-item-description'>
-                        {d.description}
+                        {descriptionHtml}
+                    </div>
+
+                    <div className='clear'></div>
+
+                    <div className='party-create__class-item-timer'
+                        data-tip={d.timer + ' seconds required for critical hit'}>
+
+                        <div className='party-create__class-item-timer-bar-wrapper'>
+                            <div className='party-create__class-item-timer-bar' style={{width: ((d.timer / this.props.classes.maxTimer) * 100) + '%'}}> </div>
+                        </div>
+                        <div className='party-create__class-item-timer-label'>
+                            {d.timer} seconds
+                        </div>
                     </div>
                 </div>
             );
@@ -78,7 +151,11 @@ var PartyCreate = React.createClass({
                     <div className='party-create__left-panel-wrapper'>
                         <div className='party-create__header-wrapper'>
                             <div className='party-create__title'>
-                                <h2> Members </h2>
+                                <h2> Members
+                                    <span className='party-create__title-members-length'>
+                                        {members.length} / 5
+                                    </span>
+                                </h2>
                             </div>
                         </div>
 
@@ -138,4 +215,12 @@ var PartyCreate = React.createClass({
     }
 });
 
-export default PartyCreate;
+/**
+ * configure select function and connect to redux
+ */
+function select(state) {
+    logger.log('components/root-party-create:select', 'called: ', state);
+    return {partyCreate: state.partyCreate};
+}
+export default connect(select)(PartyCreate);
+//export default PartyCreate;

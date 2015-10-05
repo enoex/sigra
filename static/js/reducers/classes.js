@@ -15,32 +15,35 @@ import * as ACTIONS from '../actions.js';
  *
  */
 // TODO: get from server / local data file
-const defaultState = [
-    {
-        name: 'Warrior',
-        icon: 'warrior',
-        description: 'Increases your defense',
-        timer: 8
-    },
-    {
-        name: 'Ranger',
-        icon: 'ranger',
-        description: 'Fast firing archer',
-        timer: 3
-    },
-    {
-        name: 'Wizard',
-        icon: 'wizard',
-        description: 'Poweful arcane based spell caster',
-        timer: 10
-    },
-    {
-        name: 'Cleric',
-        icon: 'cleric',
-        description: 'Restores health',
-        timer: 8
-    }
-];
+const defaultState = {
+    maxTimer: 12,
+    classes: [
+        {
+            name: 'Warrior',
+            id: 'warrior',
+            description: 'Increases defense by ([10][[x2]]) and absorbs the next ([20][[x2]]) damage for ([2][[x3]]) seconds.',
+            timer: 8
+        },
+        {
+            name: 'Ranger',
+            id: 'ranger',
+            description: 'Fast firing archer, deals ([5][[x2]]) damage',
+            timer: 3
+        },
+        {
+            name: 'Wizard',
+            id: 'wizard',
+            description: 'Fires a magic missle, dealing ([30][[x2.5]]) damage immediately',
+            timer: 10
+        },
+        {
+            name: 'Cleric',
+            id: 'cleric',
+            description: 'Restores ([20][[x3]]) health immediately',
+            timer: 12
+        }
+    ]
+};
 
 export default function classes ( state=defaultState, action ){
     switch(action.type){
