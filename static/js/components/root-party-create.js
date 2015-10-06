@@ -103,8 +103,11 @@ var PartyCreate = React.createClass({
                             {d.name}
 
                             <span className='party-create__class-item-class-types'>
-                                <img className='party-create__class-item-class-type-icon'
-                                    src='/static/img/classes/type-tank.png' />
+                                {d.types.map(function(type){
+                                    return (<img
+                                        className='party-create__class-item-class-type-icon'
+                                        src={'/static/img/classes/type-' + type + '.svg'} />);
+                                }) }
                                 <div className='clear'></div>
                             </span>
                         </span>
@@ -175,21 +178,25 @@ var PartyCreate = React.createClass({
                             <div className='party-create__right-panel-header-item header-item-tank'>
                                 <div className='party-create__right-panel-header-item-inner'>
                                     Tank
+                                    <img className='party-create__filter-icon' src='/static/img/classes/type-tank.svg' />
                                 </div>
                             </div>
                             <div className='party-create__right-panel-header-item header-item-heal'>
                                 <div className='party-create__right-panel-header-item-inner'>
                                     Heal
+                                    <img className='party-create__filter-icon' src='/static/img/classes/type-heal.svg' />
                                 </div>
                             </div>
                             <div className='party-create__right-panel-header-item header-item-damage'>
                                 <div className='party-create__right-panel-header-item-inner'>
                                     Damage
+                                    <img className='party-create__filter-icon' src='/static/img/classes/type-dps.svg' />
                                 </div>
                             </div>
                             <div className='party-create__right-panel-header-item header-item-utility'>
                                 <div className='party-create__right-panel-header-item-inner'>
                                     Uility
+                                    <img className='party-create__filter-icon' src='/static/img/classes/type-util.svg' />
                                 </div>
                             </div>
 

@@ -9,7 +9,7 @@
 
 $MENU_WIDTH: 760px;
 $PARTY_CREATE_HEADER_HEIGHT: 60px;
-$PARTY_CREATE_LEFT_PANEL_WIDTH: 210px;
+$PARTY_CREATE_LEFT_PANEL_WIDTH: 204px;
 $PARTY_CREATE_FOOTER_HEIGHT: 60px;
 
 .party-create__wrapper {
@@ -144,7 +144,6 @@ $PARTY_CREATE_RIGHT_PANEL_HEADER_HEIGHT: 50px;
     height: $PARTY_CREATE_RIGHT_PANEL_HEADER_HEIGHT - 1;
     float: left;
     position: relative;
-    width: 165px;
 }
 .party-create__right-panel-header-item.header-item-active {
     border-bottom: 1px solid $BACKGROUND_COLOR;
@@ -164,20 +163,30 @@ $PARTY_CREATE_RIGHT_PANEL_HEADER_HEIGHT: 50px;
 /* FILTER */
 .party-create__right-panel-header-item.header-item-all {
     border-left: none;
+    width: 142px;
 }
 .party-create__right-panel-header-item.header-item-tank,
-.party-create__right-panel-header-item.header-item-damage,
 .party-create__right-panel-header-item.header-item-heal,
+.party-create__right-panel-header-item.header-item-damage,
 .party-create__right-panel-header-item.header-item-utility {
-    width: 94px;
+    width: 92px;
 }
+.party-create__right-panel-header-item.header-item-damage {
+    width: 120px;
+}
+
 .party-create__right-panel-header-item.header-item-utility {
     border-right: none;
-    width: 93px;
+    width: 100px;
 }
 
 .party-create__right-panel-header-item-inner {
     padding: 0.7em 0 0 1em;
+}
+.party-create__filter-icon {
+    height: 14px;
+    margin-left: 4px;
+    width: 14px;
 }
 
 /* Panel Inner */
