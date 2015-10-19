@@ -1,0 +1,28 @@
+/* =========================================================================
+ *
+ * root-party-play
+ * 
+ * ========================================================================= */
+/*
+    TODO: Combine this and the main-menu.scss. Pull out shared styles
+*/
+
+$MENU_WIDTH: 760px;
+
+.root-party-play__wrapper {
+    @include position(absolute, 10px 0 10px 50%);
+    color: $COLOR_1;
+    margin-left: -$MENU_WIDTH/2;
+    width: $MENU_WIDTH;
+}
+.root-party-play__inner {
+    @include position(absolute, 0);
+    border: 2px solid $COLOR_1;
+
+    &:before {
+        @include position(absolute, -6px -6px -6px -6px);
+        content: " ";
+        z-index: -1;
+        border: 6px solid $BACKGROUND_COLOR;
+    }
+}

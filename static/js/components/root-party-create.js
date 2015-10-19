@@ -37,9 +37,6 @@ var PartyCreate = React.createClass({
     /**
      * UI
      */
-    backClicked: function backClicked (){
-        this.props.dispatch(ACTIONS.mainMenuShowParty());
-    },
     classItemClicked: function classItemClicked ( d ){
         logger.log('components/party-create:classItemClicked', 'called, %j', d);
         this.props.dispatch(ACTIONS.partyCreateAddMemberFromClassObject(d));
@@ -47,6 +44,16 @@ var PartyCreate = React.createClass({
     removePartyMemberAtIndex: function removePartyMemberAtIndex ( i ){
         logger.log('components/party-create:removePartyMemberAtIndex', 'called: ' + i);
         this.props.dispatch(ACTIONS.partyCreateRemoveMemberAtIndex(i));
+    },
+
+    /**
+     * Navigation
+     */
+    backClicked: function backClicked (){
+        this.props.dispatch(ACTIONS.mainMenuShowParty());
+    },
+    createClicked: function createClicked (){
+        this.props.dispatch(ACTIONS.partyCreateCreateParty(this.props.partyCreate.members));
     },
 
     /**
@@ -156,7 +163,7 @@ var PartyCreate = React.createClass({
                             <div className='party-create__title'>
                                 <h2> Members
                                     <span className='party-create__title-members-length'>
-                                        {members.length} / 5
+                                        {members.length} / {this.props.partyCreate.maxMembers}
                                     </span>
                                 </h2>
                             </div>
@@ -211,8 +218,8 @@ var PartyCreate = React.createClass({
                         <div onClick={this.backClicked} className='party-create__current-party-list-back'>
                             <h3> ⬅︎  Back </h3>
                         </div>
-                        <div onClick={this.backClicked}
-                            className='party-create__current-party-list-next'>
+                        <div onClick={this.createClicked}
+                            className={'party-create__current-party-list-next ' + (this.props.partyCreate.members.length === this.props.partyCreate.maxMembers ? '' : 'disabled')}>
                             <h3> Create ➡︎</h3>
                         </div>
                     </div>

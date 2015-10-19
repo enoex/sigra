@@ -329,7 +329,7 @@ $PARTY_CREATE_RIGHT_PANEL_HEADER_HEIGHT: 50px;
 }
 
 // next disabled state
-.party-create__current-party-list-next {
+.party-create__current-party-list-next.disabled {
     border: 1px solid $BACKGROUND_COLOR;
     color: $DISABLED_COLOR;
     cursor: not-allowed;

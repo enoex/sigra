@@ -12,7 +12,8 @@ import logger from './logger.js';
 import _ from 'lodash';
 import async from 'async';
 
-import {createStore, combineReducers, applyMiddleware} from 'redux';
+import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
+import { devTools, persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
 
 var reducers = {
@@ -49,7 +50,12 @@ function logMiddleware ({ dispatch, getState }) {
  */
 
 // setup store with middleware
-const createStoreWithMiddleware = applyMiddleware(logMiddleware, thunk)(createStore);
+const createStoreWithMiddleware = compose(
+    applyMiddleware(logMiddleware, thunk),
+    devTools(),
+    // Lets you write ?debug_session=<name> in address bar to persist debug sessions
+    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+)(createStore);
 const store = createStoreWithMiddleware(combineReducers(reducers));
 
 export default store;

@@ -16,7 +16,7 @@ import * as ACTIONS from '../actions.js';
  */
 // TODO: get from server / local data file
 const defaultState = {
-    maxMembers: 5,
+    maxMembers: 3,
     members: []
 };
 
@@ -30,7 +30,8 @@ export default function classes ( state=defaultState, action ){
                 let newMember = {
                     name: action.name,
                     classId: action.classObject.id,
-                    className: action.classObject.name
+                    className: action.classObject.name,
+                    types: action.classObject.types
                 };
 
                 newState = _.cloneDeep(state);

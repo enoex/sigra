@@ -20,7 +20,12 @@ import $ from 'jquery'; window.$ = $;
 import React from 'react';
 import router from './router.js';
 
-import { createStore } from 'redux';
+// Redux DevTools store enhancers
+import { devTools, persistState } from 'redux-devtools';
+// React components for Redux DevTools
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
+import SliderMonitor from 'redux-slider-monitor';
+
 import { Provider } from 'react-redux';
 import store from "./store.js";
 
@@ -35,9 +40,16 @@ router.run((Handler, state) => {
     logger.log('main:routerRun', 'preparing to render');
 
     React.render(
-        <Provider store={store}>
-            {()=> <Handler {...state} />}
-        </Provider>,
-        document.getElementById('app')
+        <div className='app'>
+            <Provider store={store}>
+                {()=> <Handler {...state} />}
+            </Provider>
+            <DebugPanel top left bottom>
+                <DevTools store={store}
+                    monitor={LogMonitor}
+                />
+            </DebugPanel>
+        </div>,
+        document.getElementById('app-wrapper')
     );
 });

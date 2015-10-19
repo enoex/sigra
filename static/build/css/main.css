@@ -622,6 +622,41 @@ li, ul {
 
 /* =========================================================================
  *
+ * root-party-play
+ * 
+ * ========================================================================= */
+/*
+    TODO: Combine this and the main-menu.scss. Pull out shared styles
+*/
+.root-party-play__wrapper {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  bottom: 10px;
+  left: 50%;
+  color: #c49a6c;
+  margin-left: -380px;
+  width: 760px; }
+
+.root-party-play__inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px solid #c49a6c; }
+  .root-party-play__inner:before {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    bottom: -6px;
+    left: -6px;
+    content: " ";
+    z-index: -1;
+    border: 6px solid #000000; }
+
+/* =========================================================================
+ *
  * party-create
  * 
  * ========================================================================= */
@@ -990,11 +1025,11 @@ li, ul {
     padding: 1em 1em 0 0;
     text-align: right; }
 
-.party-create__current-party-list-next {
+.party-create__current-party-list-next.disabled {
   border: 1px solid #000000;
   color: rgba(255, 255, 255, 0.5);
   cursor: not-allowed; }
-  .party-create__current-party-list-next:before {
+  .party-create__current-party-list-next.disabled:before {
     position: absolute;
     top: -2px;
     right: -2px;
@@ -1003,10 +1038,10 @@ li, ul {
     content: " ";
     z-index: 100;
     border: 1px dashed #000000; }
-  .party-create__current-party-list-next:hover {
+  .party-create__current-party-list-next.disabled:hover {
     background: none;
     color: rgba(255, 255, 255, 0.5); }
-    .party-create__current-party-list-next:hover:before {
+    .party-create__current-party-list-next.disabled:hover:before {
       position: absolute;
       top: -2px;
       right: -2px;

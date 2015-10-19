@@ -19,10 +19,10 @@ import * as ACTIONS from '../actions.js';
  */
 // TODO: Load / save state with localforage? Or set manually for testing
 const defaultState = {
-    //page: 'home'
-
-    //page: 'party'
-    page: 'party-create'
+    page: 'home',
+    // usually null, but if a party is selected it will be the index of the
+    // selected party (accessible by index via the `account` reducer)
+    selectedPartyIndex: null
 };
 
 export default function mainMenu ( state=defaultState, action ){
@@ -34,6 +34,8 @@ export default function mainMenu ( state=defaultState, action ){
 
         case ACTIONS.MAIN_MENU_SHOW_PARTY:
             return { page: 'party' };
+        case ACTIONS.MAIN_MENU_SHOW_PARTY_PLAY:
+            return { page: 'party-play', selectedPartyIndex: action.index };
         case ACTIONS.MAIN_MENU_SHOW_PARTY_CREATE:
             return { page: 'party-create' };
 

@@ -23,6 +23,7 @@ import generateName from './util/generate-name.js';
 export const MAIN_MENU_SHOW_HOME = 'MAIN_MENU_SHOW_HOME';
 export const MAIN_MENU_SHOW_PLAY = 'MAIN_MENU_SHOW_PLAY';
 export const MAIN_MENU_SHOW_PARTY = 'MAIN_MENU_SHOW_PARTY';
+export const MAIN_MENU_SHOW_PARTY_PLAY = 'MAIN_MENU_SHOW_PARTY_PLAY';
 export const MAIN_MENU_SHOW_PARTY_CREATE = 'MAIN_MENU_SHOW_PARTY_CREATE';
 export const MAIN_MENU_SHOW_ACCOUNT = 'MAIN_MENU_SHOW_ACCOUNT';
 export const MAIN_MENU_SHOW_LEADERBOARD = 'MAIN_MENU_SHOW_LEADERBOARD';
@@ -42,6 +43,9 @@ export function mainMenuShowPlay () {
 }
 
 export function mainMenuShowParty ( ){ return { type: MAIN_MENU_SHOW_PARTY }; }
+export function mainMenuShowPartyPlay (index){
+    return { type: MAIN_MENU_SHOW_PARTY_PLAY, index: index };
+}
 export function mainMenuShowPartyCreate ( ){ return { type: MAIN_MENU_SHOW_PARTY_CREATE }; }
 export function mainMenuShowAccount ( ){ return { type: MAIN_MENU_SHOW_ACCOUNT }; }
 export function mainMenuShowLeaderboard ( ){ return { type: MAIN_MENU_SHOW_LEADERBOARD }; }
@@ -69,6 +73,15 @@ export function partyCreateRemoveMemberAtIndex ( index ){
     return { type: PARTY_CREATE_REMOVE_MEMBER, index: index };
 }
 
+export const PARTY_CREATE_CREATE_PARTY = 'PARTY_CREATE_CREATE_PARTY';
+export function partyCreateCreateParty ( party ){
+    return (dispatch, getState) => {
+        // update party
+        dispatch({ type: PARTY_CREATE_CREATE_PARTY, party: party });
+        // show party screen
+        dispatch(mainMenuShowParty());
+    };
+}
 
 /**
  *
