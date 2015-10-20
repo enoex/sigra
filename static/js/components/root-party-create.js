@@ -75,7 +75,8 @@ var PartyCreate = React.createClass({
                             { members[i] ? (
                                 <div className='party-create__member-list-item-inner'
                                     onClick={()=>{ this.removePartyMemberAtIndex(i); }}>
-                                    <img className='party-create__member-list-item-class-image' src='/static/img/classes/warrior.png' />
+                                    <img className='party-create__member-list-item-class-image' 
+                                        src={'/static/img/classes/' + members[i].classId + '.png'} />
                                     <div className='party-create__member-list-item-names'>
                                         <div className='party-create__member-list-item-name'>
                                             {members[i].name}
@@ -121,7 +122,7 @@ var PartyCreate = React.createClass({
                     </div>
 
                     <div className='party-create__class-item-class-image'>
-                        <img src='/static/img/classes/warrior.png' />
+                        <img src={'/static/img/classes/' + d.name + '.png'} />
                     </div>
                     <div className='party-create__class-item-description'>
                         {descriptionHtml}

@@ -44,7 +44,7 @@ router.run((Handler, state) => {
             <Provider store={store}>
                 {()=> <Handler {...state} />}
             </Provider>
-            <DebugPanel top left bottom>
+            <DebugPanel top right bottom>
                 <DevTools store={store}
                     monitor={LogMonitor}
                 />

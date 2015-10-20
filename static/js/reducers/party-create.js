@@ -54,6 +54,11 @@ export default function classes ( state=defaultState, action ){
             }
             break;
 
+        case ACTIONS.PARTY_CREATE_CREATE_PARTY:
+            newState = _.cloneDeep(state);
+            newState.members = [];
+            return newState;
+
         default:
             return state;
     }

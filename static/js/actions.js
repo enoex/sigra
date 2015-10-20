@@ -7,6 +7,7 @@
  */
 import logger from './logger.js';
 import generateName from './util/generate-name.js';
+import $ from 'jquery';
 
 /**
  *
@@ -23,6 +24,7 @@ import generateName from './util/generate-name.js';
 export const MAIN_MENU_SHOW_HOME = 'MAIN_MENU_SHOW_HOME';
 export const MAIN_MENU_SHOW_PLAY = 'MAIN_MENU_SHOW_PLAY';
 export const MAIN_MENU_SHOW_PARTY = 'MAIN_MENU_SHOW_PARTY';
+export const MAIN_MENU_SHOW_PLAY_QUEUE = 'MAIN_MENU_SHOW_PLAY_QUEUE';
 export const MAIN_MENU_SHOW_PARTY_PLAY = 'MAIN_MENU_SHOW_PARTY_PLAY';
 export const MAIN_MENU_SHOW_PARTY_CREATE = 'MAIN_MENU_SHOW_PARTY_CREATE';
 export const MAIN_MENU_SHOW_ACCOUNT = 'MAIN_MENU_SHOW_ACCOUNT';
@@ -46,6 +48,9 @@ export function mainMenuShowParty ( ){ return { type: MAIN_MENU_SHOW_PARTY }; }
 export function mainMenuShowPartyPlay (index){
     return { type: MAIN_MENU_SHOW_PARTY_PLAY, index: index };
 }
+
+export function mainMenuShowPlayQueue (index){ return { type: MAIN_MENU_SHOW_PLAY_QUEUE, index: index }; }
+
 export function mainMenuShowPartyCreate ( ){ return { type: MAIN_MENU_SHOW_PARTY_CREATE }; }
 export function mainMenuShowAccount ( ){ return { type: MAIN_MENU_SHOW_ACCOUNT }; }
 export function mainMenuShowLeaderboard ( ){ return { type: MAIN_MENU_SHOW_LEADERBOARD }; }

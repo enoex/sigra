@@ -14,6 +14,7 @@ import * as ACTIONS from '../actions.js';
 import MainMenu from './root-main-menu.js';
 import Party from './root-party.js';
 import PartyPlay from './root-party-play.js';
+import PlayQueue from './play-queue.js';
 import PartyCreate from './root-party-create.js';
 
 var ReactTooltip = require("react-tooltip");
@@ -57,6 +58,13 @@ var Root = React.createClass({
 
             case 'party-play':
                 rootHtml = (<PartyPlay dispatch={dispatch}
+                    mainMenu={this.props.mainMenu}
+                    account={this.props.account} />
+                );
+                break;
+
+            case 'play-queue':
+                rootHtml = (<PlayQueue dispatch={dispatch}
                     mainMenu={this.props.mainMenu}
                     account={this.props.account} />
                 );

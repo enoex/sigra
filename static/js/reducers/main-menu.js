@@ -34,8 +34,12 @@ export default function mainMenu ( state=defaultState, action ){
 
         case ACTIONS.MAIN_MENU_SHOW_PARTY:
             return { page: 'party' };
+
         case ACTIONS.MAIN_MENU_SHOW_PARTY_PLAY:
             return { page: 'party-play', selectedPartyIndex: action.index };
+        case ACTIONS.MAIN_MENU_SHOW_PLAY_QUEUE:
+            return { page: 'play-queue', selectedPartyIndex: action.index };
+
         case ACTIONS.MAIN_MENU_SHOW_PARTY_CREATE:
             return { page: 'party-create' };
 
