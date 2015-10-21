@@ -15,8 +15,14 @@ import * as ACTIONS from '../actions.js';
  *
  */
 // TODO: get from server / local data file
-const defaultState = {
-    maxTimer: 12,
+let defaultState = {
+    // highest value of timer across all classes (calculated)
+    maxTimer: 0,
+
+    // stores id: ref to classes[i] (calulcate)
+    classesById: {},
+
+    // all classes
     classes: [
         {
             name: 'Warrior',
@@ -56,8 +62,33 @@ const defaultState = {
     ]
 };
 
+/**
+ * takes in a state and mutates it, setting up classesById and maxTimer
+ * NOTE: Any actions should call this function before returning state
+ */
+function prepareState(state){
+    state.maxTimer = 0;
+    state.classesById = {};
+
+    var classesLength = state.classes.length;
+    for(var i = 0; i < classesLength; i++){
+        // stores REF
+        state.classesById[state.classes[i].id] = state.classes[i];
+        if(state.classes[i].timer > state.maxTimer){
+            state.maxTimer = state.classes[i].timer;
+        }
+    }
+
+    return state;
+}
+// setup state
+defaultState = prepareState(defaultState);
+
+
 export default function classes ( state=defaultState, action ){
     switch(action.type){
+        // NOTE: Possible actions could be adding new classes when they are
+        // discovered
         default:
             return state;
     }

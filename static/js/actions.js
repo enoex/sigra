@@ -25,7 +25,7 @@ export const MAIN_MENU_SHOW_HOME = 'MAIN_MENU_SHOW_HOME';
 export const MAIN_MENU_SHOW_PLAY = 'MAIN_MENU_SHOW_PLAY';
 export const MAIN_MENU_SHOW_PARTY = 'MAIN_MENU_SHOW_PARTY';
 export const MAIN_MENU_SHOW_PLAY_QUEUE = 'MAIN_MENU_SHOW_PLAY_QUEUE';
-export const MAIN_MENU_SHOW_PARTY_PLAY = 'MAIN_MENU_SHOW_PARTY_PLAY';
+export const MAIN_MENU_SHOW_PARTY_SELECT = 'MAIN_MENU_SHOW_PARTY_SELECT';
 export const MAIN_MENU_SHOW_PARTY_CREATE = 'MAIN_MENU_SHOW_PARTY_CREATE';
 export const MAIN_MENU_SHOW_ACCOUNT = 'MAIN_MENU_SHOW_ACCOUNT';
 export const MAIN_MENU_SHOW_LEADERBOARD = 'MAIN_MENU_SHOW_LEADERBOARD';
@@ -45,9 +45,7 @@ export function mainMenuShowPlay () {
 }
 
 export function mainMenuShowParty ( ){ return { type: MAIN_MENU_SHOW_PARTY }; }
-export function mainMenuShowPartyPlay (index){
-    return { type: MAIN_MENU_SHOW_PARTY_PLAY, index: index };
-}
+export function mainMenuShowPartySelect ( index ){ return { type: MAIN_MENU_SHOW_PARTY_SELECT, index: index }; }
 
 export function mainMenuShowPlayQueue (index){ return { type: MAIN_MENU_SHOW_PLAY_QUEUE, index: index }; }
 

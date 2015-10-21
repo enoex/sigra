@@ -14,6 +14,8 @@ import {connect} from 'react-redux';
 
 import * as ACTIONS from '../actions.js';
 
+import PartySelected from './root-party-selected.js';
+
 /**
  *
  * Functionality
@@ -35,8 +37,14 @@ var Party = React.createClass({
     partyClicked: function partyClicked(party, index){
         logger.log('components/root-party:partyClicked', 'called (' + index + ')');
         if(party){
-            // go to the 'play' / queue screen
-            this.props.dispatch(ACTIONS.mainMenuShowPartyPlay(index));
+            // if same party was selected, de-select it
+            if(index === this.props.mainMenu.selectedPartyIndex){
+                return this.props.dispatch(ACTIONS.mainMenuShowPartySelect(null));
+
+            } else {
+                // show selected party
+                this.props.dispatch(ACTIONS.mainMenuShowPartySelect(index));
+            }
 
         } else {
             // Create if no party exists
@@ -66,7 +74,10 @@ var Party = React.createClass({
 
                     return (
                         <li key={i}
-                            className={'root-party__current-party-list-item ' + (parties[i] ? '' : 'root-party__current-party-list-item-empty')}
+                            className={'root-party__current-party-list-item ' +
+                                (this.props.mainMenu.selectedPartyIndex === i ? 'root-party__current-party-list-item-active' : '') + ' ' +
+                                (parties[i] ? '' : 'root-party__current-party-list-item-empty')
+                            }
                             onClick={this.partyClicked.bind(this, parties[i], i)} >
                             {partyItemHtml}
                         </li>
@@ -75,15 +86,27 @@ var Party = React.createClass({
             </ul>
         );
 
+        /**
+         * Right pane
+         */
         // right panel HTML is determine by selected party
         let rightSidePartyHtml = '';
-        if(!this.props.account.selectedParty){
+
+        if(isNaN(parseInt(this.props.mainMenu.selectedPartyIndex, 10))){
             rightSidePartyHtml = (
                 <div className='root-party__right-panel'>
                     <div className='root-party__right-panel-background'>
                         <img src='/static/img/map-no-border.png' />
                     </div>
                 </div>
+            );
+        } else {
+            rightSidePartyHtml = (
+                <PartySelected
+                    dispatch={dispatch}
+                    classes={this.props.classes}
+                    mainMenu={this.props.mainMenu}
+                    party={this.props.account.parties[this.props.mainMenu.selectedPartyIndex]} />
             );
         }
 

@@ -7,7 +7,7 @@
     TODO: Combine this and the main-menu.scss. Pull out shared styles
 */
 
-$MENU_WIDTH: 760px;
+$MENU_WIDTH: 820px;
 
 .root-party__wrapper {
     @include user-select(none);
@@ -34,7 +34,7 @@ $MENU_WIDTH: 760px;
 $ROOT_PARTY_LIST_WIDTH: 300px;
 .root-party__current-party-list-wrapper {
     @include position(absolute, 0 auto 0 0);
-    border-right: 1px solid $COLOR_1;
+    border-right: 2px solid $COLOR_1;
     width: $ROOT_PARTY_LIST_WIDTH;
     z-index: 10;
 }
@@ -110,6 +110,14 @@ $ROOT_PARTY_LIST_FOOTER_HEIGHT: 60px;
         border: 6px solid $COLOR_1;
     }
 }
+.root-party__current-party-list-item-active {
+    border: 1px solid $BACKGROUND_COLOR;
+    background: $COLOR_1;
+    color: $BACKGROUND_COLOR;
+    &:before {
+        border: 6px solid $COLOR_1;
+    }
+}
 
 /* Empty Item */
 .root-party__current-party-list-item-empty, 
@@ -140,3 +148,10 @@ $ROOT_PARTY_LIST_FOOTER_HEIGHT: 60px;
         height: 100%;
     }
 }
+
+/**
+ *
+ * Load selected party side pane CSS
+ *
+ */
+@import './root-party-selected.scss';

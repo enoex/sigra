@@ -13,7 +13,6 @@ import * as ACTIONS from '../actions.js';
 
 import MainMenu from './root-main-menu.js';
 import Party from './root-party.js';
-import PartyPlay from './root-party-play.js';
 import PlayQueue from './play-queue.js';
 import PartyCreate from './root-party-create.js';
 
@@ -53,13 +52,10 @@ var Root = React.createClass({
                 break;
 
             case 'party':
-                rootHtml = (<Party dispatch={dispatch} account={this.props.account}/>);
-                break;
-
-            case 'party-play':
-                rootHtml = (<PartyPlay dispatch={dispatch}
-                    mainMenu={this.props.mainMenu}
-                    account={this.props.account} />
+                rootHtml = (<Party dispatch={dispatch}
+                        classes={this.props.classes}
+                        mainMenu={this.props.mainMenu}
+                        account={this.props.account}/>
                 );
                 break;
 
