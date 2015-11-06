@@ -4,6 +4,9 @@
  *
  * 
  * ========================================================================= */
+* {
+  box-sizing: border-box; }
+
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -418,7 +421,7 @@ li, ul {
   right: 0;
   bottom: 0;
   left: 195px;
-  background: url(/static/img/mountain.png) no-repeat;
+  background: url(/static/build/js//static/img/mountain.png) no-repeat;
   z-index: 1; }
 
 .main-menu__list-wrapper {
@@ -1179,6 +1182,191 @@ li, ul {
   padding: 0 1px;
   position: relative;
   z-index: 20; }
+
+/* =========================================================================
+ *
+ * play-queue
+ * 
+ * ========================================================================= */
+/*
+    TODO: Combine this and the root-party.scss. Pull out shared styles
+*/
+.play-queue__wrapper {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  top: 10px;
+  right: 0;
+  bottom: 10px;
+  left: 50%;
+  color: #c49a6c;
+  margin-left: -280px;
+  width: 560px; }
+
+.play-queue__inner {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px solid #c49a6c;
+  padding: 1em;
+  height: 200px; }
+
+.play-queue__footer--wrapper {
+  position: absolute;
+  top: 300px;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  border: 2px solid #c49a6c;
+  height: 70px; }
+
+.play-queue__nav-back {
+  position: absolute;
+  top: 0;
+  right: 50%;
+  bottom: 0;
+  left: 0;
+  cursor: w-resize;
+  padding: 6px; }
+
+.play-queue__nav-go {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+  cursor: e-resize;
+  padding: 6px;
+  text-align: right; }
+
+.play-queue__nav-go, .play-queue__nav-back {
+  border-right: 1px solid #c49a6c; }
+  .play-queue__nav-go:hover, .play-queue__nav-back:hover {
+    background: #c49a6c;
+    color: #000000; }
+    .play-queue__nav-go:hover:before, .play-queue__nav-back:hover:before {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      bottom: 2px;
+      left: 2px;
+      content: " ";
+      z-index: 100;
+      border: 2px solid #000000; }
+
+/* =========================================================================
+ *
+ * game
+ * 
+ * ========================================================================= */
+/*
+    Game styles
+*/
+.game__wrapper {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  top: 10px;
+  right: 0;
+  bottom: 10px;
+  left: 50%;
+  color: #c49a6c;
+  margin-left: -410px;
+  height: 680px;
+  width: 820px; }
+
+.game__inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px solid #c49a6c; }
+  .game__inner:before {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    bottom: -6px;
+    left: -6px;
+    content: " ";
+    z-index: -1;
+    border: 6px solid #000000; }
+
+.game__health-wrapper-player, .game__health-wrapper-enemy {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  border-bottom: 2px solid #c49a6c;
+  height: 50px; }
+
+.game__health-wrapper-enemy {
+  bottom: 0;
+  border-top: 2px solid #c49a6c;
+  top: auto; }
+
+.game_play-wrapper {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  bottom: 50px;
+  left: 0; }
+
+/**
+ * 
+ * Player Pane
+ *
+ */
+.game__pane-wrapper-player, .game__pane-wrapper-enemy {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; }
+
+.game__pane-wrapper-player {
+  right: auto;
+  width: 62%; }
+
+.game__active-effects-wrapper-player {
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: 0;
+  border-right: 2px solid #c49a6c;
+  width: 30px; }
+
+.game__party-members-player-wrapper {
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: 30px;
+  border-right: 1px solid #f0f0ff;
+  width: 480px; }
+
+.game__party-member-player-wrapper {
+  border-bottom: 1px solid #f0ff00;
+  position: relative; }
+
+.game__abilities-wrapper-player {
+  border-right: 1px solid #c49a6c;
+  float: left;
+  height: 100%;
+  width: 60%; }
+
+.game__party-member-sprite {
+  float: left;
+  height: 100%;
+  width: 40%; }
 
 .__react_component_tooltip {
   background: #c49a6c !important;

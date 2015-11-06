@@ -3,6 +3,7 @@
  *      main entrypoint into site homepage
  * @module main
  */
+
 /**
  * css
  */
@@ -44,6 +45,7 @@ router.run((Handler, state) => {
             <Provider store={store}>
                 {()=> <Handler {...state} />}
             </Provider>
+
             <DebugPanel top right bottom>
                 <DevTools store={store}
                     monitor={LogMonitor}

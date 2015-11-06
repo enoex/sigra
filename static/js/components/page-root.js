@@ -12,6 +12,7 @@ import {connect} from 'react-redux';
 import * as ACTIONS from '../actions.js';
 
 import MainMenu from './root-main-menu.js';
+import Game from './game.js';
 import Party from './root-party.js';
 import PlayQueue from './play-queue.js';
 import PartyCreate from './root-party-create.js';
@@ -72,7 +73,17 @@ var Root = React.createClass({
                     <PartyCreate dispatch={dispatch}
                         classes={this.props.classes}
                         partyCreate={this.props.partyCreate}
-                        account={this.props.account}/>
+                        account={this.props.account} />
+                );
+                break;
+
+            case 'game':
+                rootHtml = (
+                    <Game dispatch={dispatch}
+                        mainMenu={this.props.mainMenu}
+                        classes={this.props.classes}
+                        partyCreate={this.props.partyCreate}
+                        account={this.props.account} />
                 );
                 break;
 
@@ -94,9 +105,12 @@ var Root = React.createClass({
  */
 function select(state) {
     logger.log('components/app:select', 'called: ', state);
-
-    // TODO: use https://github.com/faassen/reselect and only return certain
-    // things
-    return state;
+    // TODO: use https://github.com/faassen/reselect
+    return {
+        mainMenu: state.mainMenu,
+        classes: state.classes,
+        partyCreate: state.partyCreate,
+        account: state.account
+    };
 }
 export default connect(select)(Root);

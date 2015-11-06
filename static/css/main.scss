@@ -4,6 +4,8 @@
  *
  * 
  * ========================================================================= */
+* { box-sizing: border-box; }
+
 // ======================================
 //
 // Themes
@@ -46,6 +48,9 @@
 @import "./components/main-menu.scss";
 @import "./components/root-party.scss";
 @import "./components/root-party-create.scss";
+@import "./components/play-queue.scss";
+
+@import "./components/game.scss";
 
 
 // OVERRIDES

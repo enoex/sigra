@@ -17,6 +17,7 @@ import { devTools, persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
 
 var reducers = {
+    game: require('./reducers/game'),
     account: require('./reducers/account'),
     classes: require('./reducers/classes'),
     mainMenu: require('./reducers/main-menu'),

@@ -2,12 +2,19 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
+    worker: {
+        output: {
+            filename: 'hash.worker.js',
+            chunkFilename: "[id].hash.worker.js"
+        }
+    },
     entry: {
         main: [ './static/js/main.js' ],
         test: [ './static/js/test/main.js' ]
     },
     output: {
         path: __dirname + '/static/build/js/',
+        publicPath: '/static/build/js/',
         filename: '[name].js'
     },
     module: {

@@ -26,6 +26,10 @@ var PlayQueue = React.createClass({
         this.props.dispatch(ACTIONS.mainMenuShowParty());
     },
 
+    goClicked: function backClicked(){
+        this.props.dispatch(ACTIONS.playQueueStartGame());
+    },
+
     /**
      * render it
      */
@@ -39,7 +43,21 @@ var PlayQueue = React.createClass({
         return (
             <div className='play-queue__wrapper'>
                 <div className='play-queue__inner'>
-                    Finding opponent ....
+                    <div>
+                        Finding opponent . . .
+                    </div>
+
+                </div>
+
+                <div className='play-queue__footer--wrapper'>
+                    <div onClick={this.backClicked}
+                        className='play-queue__nav-back'>
+                        <h3> ⬅︎  Back </h3>
+                    </div>
+                    <div onClick={this.goClicked}
+                        className='play-queue__nav-go'>
+                        <h3> Go (DEV) ➡︎</h3>
+                    </div>
                 </div>
             </div>
         );

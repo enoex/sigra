@@ -1,0 +1,94 @@
+/* =========================================================================
+ *
+ * game
+ * 
+ * ========================================================================= */
+/*
+    Game styles
+*/
+
+$WRAPPER_WIDTH : 820px;
+$WRAPPER_HEIGHT: 680px;
+$PARTY_CREATE_HEADER_HEIGHT: 60px;
+$PARTY_CREATE_LEFT_PANEL_WIDTH: 204px;
+$PARTY_CREATE_FOOTER_HEIGHT: 60px;
+
+$GAME_PLAYER_HEALTH_HEIGHT: 50px;
+$GAME_ENEMY_HEALTH_HEIGHT: 50px;
+$GAME_PLAYER_ABILITIES_WIDTH: 190px;
+$GAME_ACTIVE_EFFECTS_WIDTH: 30px;
+
+.game__wrapper {
+    @include user-select(none);
+    @include position(absolute, 10px 0 10px 50%);
+    color: $COLOR_1;
+    margin-left: -$WRAPPER_WIDTH/2;
+    height: $WRAPPER_HEIGHT;
+    width: $WRAPPER_WIDTH;
+}
+.game__inner {
+    @include position(absolute, 0);
+    border: 2px solid $COLOR_1;
+
+    &:before {
+        @include position(absolute, -6px -6px -6px -6px);
+        content: " ";
+        z-index: -1;
+        border: 6px solid $BACKGROUND_COLOR;
+    }
+}
+
+// Player health
+.game__health-wrapper-player, .game__health-wrapper-enemy {
+    @include position(absolute, 0 0 auto 0);
+    border-bottom: 2px solid $COLOR_1;
+    height: $GAME_PLAYER_HEALTH_HEIGHT;
+}
+.game__health-wrapper-enemy { bottom: 0; border-top: 2px solid $COLOR_1; top: auto; }
+
+// Inner play region
+.game_play-wrapper {
+    @include position(absolute, $GAME_PLAYER_HEALTH_HEIGHT 0 ($GAME_ENEMY_HEALTH_HEIGHT) 0);
+}
+
+/**
+ * 
+ * Player Pane
+ *
+ */
+.game__pane-wrapper-player, .game__pane-wrapper-enemy {
+    @include position(absolute, 0 0 0 0);
+}
+.game__pane-wrapper-player {
+    //border-right: 2px solid rgba(255,255,255,0.4);
+    right: auto;
+    width: 62%;
+}
+// Active effects
+.game__active-effects-wrapper-player {
+    @include position(absolute, 0 auto 0 0);
+    border-right: 2px solid $COLOR_1;
+    width: $GAME_ACTIVE_EFFECTS_WIDTH;
+}
+
+// Party members
+.game__party-members-player-wrapper {
+    @include position(absolute, 0 auto 0 $GAME_ACTIVE_EFFECTS_WIDTH);
+    border-right: 1px solid #f0f0ff;
+    width: 480px;
+}
+.game__party-member-player-wrapper {
+    border-bottom: 1px solid #f0ff00;
+    position: relative;
+}
+.game__abilities-wrapper-player {
+    border-right: 1px solid $COLOR_1;
+    float: left;
+    height: 100%;
+    width: 60%;
+}
+.game__party-member-sprite {
+    float: left;
+    height: 100%;
+    width: 40%;
+}
