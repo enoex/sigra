@@ -89,6 +89,7 @@ var Game = React.createClass({
                                 { [1,2,3].map((d)=>{
                                     return (
                                         <div className='game__party-member-player-wrapper'
+                                            key={d}
                                             style={partyMemberStyle} >
                                             <div className='game__abilities-wrapper-player'>
                                             </div>

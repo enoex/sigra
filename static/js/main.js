@@ -30,6 +30,8 @@ import SliderMonitor from 'redux-slider-monitor';
 import { Provider } from 'react-redux';
 import store from "./store.js";
 
+import config from './config.js';
+
 /**
  *
  * functionality
@@ -40,17 +42,23 @@ logger.log('main', 'initializing');
 router.run((Handler, state) => {
     logger.log('main:routerRun', 'preparing to render');
 
+    let devToolsPanel;
+    if (config.USE_DEV_TOOLS) {
+        devToolsPanel = (
+            <DebugPanel top right bottom>
+                <DevTools store={store}
+                    monitor={LogMonitor} />
+            </DebugPanel>
+        );
+    }
+
     React.render(
         <div className='app'>
             <Provider store={store}>
                 {()=> <Handler {...state} />}
             </Provider>
 
-            <DebugPanel top right bottom>
-                <DevTools store={store}
-                    monitor={LogMonitor}
-                />
-            </DebugPanel>
+            {devToolsPanel}
         </div>,
         document.getElementById('app-wrapper')
     );

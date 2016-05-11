@@ -110,7 +110,6 @@ GAME.onGameTick = function onGameTick (tick, timeStep) {
     //
     //
     //
-    //
     // TODO: Sync game state from websocket
     this._start = this._start || new Date();
 
@@ -119,9 +118,38 @@ GAME.onGameTick = function onGameTick (tick, timeStep) {
 
     // Dispatch action that game tick changed, but do it in intervals
     // so that we don't overload the browser
-    if(tick % 99990 < 1){
+    //
+    // TODO: What's a good value? 1/60th? How to enable this but also not
+    // trigger dev debug panel updates so we can start on the game screen?
+    // Set default state?
+    //
+    // TODO: depending on debug state, don't continue tracking and saving (but
+    // do load default)
+    // TODO: Do we need to dispatch this? We could just dispatch the 
+    // state of different UI store values
+    //      -But then we lose the state tracking / loading...
+    if(tick % 690 < 1){
+        // NOTE: Dispatching this too often causes dev tools to have mem leak
+        // NOTE: Do we need to dispatch? We could simply use the store and
+        // just have this tick be used SOLELY to update store values for
+        // if abilities can be used or not
         store.dispatch(ACTIONS.gameSetTick(tick));
     }
+
+    // Each tick, we need to:
+    //
+    // Handle Input (Done via events, not needed to do here)
+    // Handle AI
+    // Handle each "party member" (ability). DOTs, debuffs, etc are all applied
+    //      directly to the player
+    // Handle 
+    //
+    // Notes: 
+    //      Using an ability is an event emitted that will update the UI state
+    //      AND game state store?
+    //      Store could be like:
+    //              handleInputUseAbility - if can use ability, update it
+    //              else don't
 };
 
 

@@ -36,7 +36,7 @@ function tickFunc () {
     timerNow = performance.now();
     TIMER_DT = TIMER_DT + Math.min(1, (timerNow - TIMER_LAST) / 1000);
 
-    while(TIMER_DT > timerStep) {
+    while (TIMER_DT > timerStep) {
         // Only call update when delta is greater than the timer step
         // to maintain constant calls
         TIMER_DT = TIMER_DT - timerStep;
